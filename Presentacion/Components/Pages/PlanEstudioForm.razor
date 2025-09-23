@@ -1,0 +1,108 @@
+﻿@page "/planes/form"
+@page "/planes/form/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@inject IPlanEstudioServicios PlanEstudioServicios
+@inject ICarreraServicios CarreraServicios
+@inject NavigationManager NavigationManager
+
+<h3>@(planEstudio.IdPlanEstudio == 0 ? "Crear Nuevo Plan de Estudio" : "Editar Plan de Estudio")</h3>
+
+<EditForm Model="@planEstudio" OnValidSubmit="GuardarPlanEstudio">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="plan">Nombre del Plan</label>
+        <InputText id="plan" class="form-control" @bind-Value="planEstudio.PlanEstudio" />
+    </div>
+
+    <div class="form-group">
+        <label for="carrera">Carrera Asociada</label>
+        <InputSelect id="carrera" class="form-control" @bind-Value="planEstudio.IdCarrera">
+            <option value="0">-- Seleccione una carrera --</option>
+            @if (carreras != null)
+            {
+                @foreach (var carrera in carreras)
+                {
+                    <option value="@carrera.IdCarrera">@carrera.NombreCarrera</option>
+                }
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="totalCreditos">Total de Créditos</label>
+        <InputNumber id="totalCreditos" class="form-control" @bind-Value="planEstudio.TotalCreditos" />
+    </div>
+
+    <div class="form-group">
+        <label for="creditosObligatorios">Créditos Obligatorios</label>
+        <InputNumber id="creditosObligatorios" class="form-control" @bind-Value="planEstudio.CreditosObligatorios" />
+    </div>
+
+    <div class="form-group">
+        <label for="creditosOptativos">Créditos Optativos</label>
+        <InputNumber id="creditosOptativos" class="form-control" @bind-Value="planEstudio.CreditosOptativos" />
+    </div>
+
+    <div class="form-group">
+        <label for="perfilIngreso">Perfil de Ingreso</label>
+        <InputTextArea id="perfilIngreso" class="form-control" @bind-Value="planEstudio.PerfilDeIngreso" />
+    </div>
+
+    <div class="form-group">
+        <label for="perfilEgreso">Perfil de Egreso</label>
+        <InputTextArea id="perfilEgreso" class="form-control" @bind-Value="planEstudio.PerfilDeEgreso" />
+    </div>
+
+    <div class="form-group">
+        <label for="campoOcupacional">Campo Ocupacional</label>
+        <InputTextArea id="campoOcupacional" class="form-control" @bind-Value="planEstudio.CampoOcupacional" />
+    </div>
+
+    <div class="form-group">
+        <label for="comentarios">Comentarios</label>
+        <InputTextArea id="comentarios" class="form-control" @bind-Value="planEstudio.Comentarios" />
+    </div>
+
+    <div class="form-group form-check">
+        <InputCheckbox id="estado" class="form-check-input" @bind-Value="planEstudio.EstadoPlanEstudio" />
+        <label class="form-check-label" for="estado">Estado Activo</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_PlanEstudio planEstudio = new E_PlanEstudio();
+    private List<E_Carrera> carreras;
+
+    protected override async Task OnInitializedAsync()
+    {
+        carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            planEstudio = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id);
+        }
+    }
+
+    private async Task GuardarPlanEstudio()
+    {
+        await PlanEstudioServicios.GuardarPlanAsync(planEstudio);
+        NavigationManager.NavigateTo("/planes");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/planes");
+    }
+}

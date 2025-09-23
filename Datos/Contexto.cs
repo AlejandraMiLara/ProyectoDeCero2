@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Datos
+namespace ProyectoDeCero2.Datos
 {
     public class Contexto : DbContext
     {
@@ -17,17 +17,18 @@ namespace Datos
         }
 
         public DbSet<E_Carrera> Carreras { get; set; }
-        public DbSet<E_PlanEstudio> PlanesEstudio { get; set; }
+        public DbSet<E_PlanEstudio> PlanesDeEstudio { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<E_Carrera>().ToTable("Carrera");
             modelBuilder.Entity<E_PlanEstudio>().ToTable("PlanEstudio");
 
+            // Configuración de la relación
             modelBuilder.Entity<E_PlanEstudio>()
-                .HasOne(pe => pe.Carrera)
+                .HasOne(p => p.Carrera)
                 .WithMany()
-                .HasForeignKey(pe => pe.IdCarrera);
+                .HasForeignKey(p => p.IdCarrera);
         }
     }
 }

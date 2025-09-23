@@ -38,6 +38,7 @@ else
                     <td>@carrera.AliasCarrera</td>
                     <td>@(carrera.EstadoCarrera ? "Activa" : "Inactiva")</td>
                     <td>
+                        <button class="btn btn-info" @onclick="() => VerPlanes(carrera.IdCarrera)">Ver Planes</button>
                         <button class="btn btn-primary" @onclick="() => EditarCarrera(carrera.IdCarrera)">Editar</button>
                         <button class="btn btn-danger" @onclick="() => EliminarCarrera(carrera.IdCarrera)">Eliminar</button>
                     </td>
@@ -81,6 +82,13 @@ else
     private void EditarCarrera(int idCarrera)
     {
         NavigationManager.NavigateTo($"/carreras/form/{idCarrera}");
+    }
+
+    private void VerPlanes(int idCarrera)
+    {
+        // Puedes implementar un modal o una nueva página para mostrar los planes
+        // Para simplificar, redirigiremos a la página principal de planes.
+        NavigationManager.NavigateTo("/planes");
     }
 
     private async Task EliminarCarrera(int idCarrera)

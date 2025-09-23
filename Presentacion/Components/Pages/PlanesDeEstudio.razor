@@ -1,0 +1,89 @@
+﻿@page "/planes"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@inject IPlanEstudioServicios PlanEstudioServicios
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<h3>Gestión de Planes de Estudio</h3>
+
+<p>
+    <button class="btn btn-success" @onclick="CrearPlanEstudio">Crear Nuevo Plan de Estudio</button>
+</p>
+
+@if (planesDeEstudio == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Plan de Estudio</th>
+                <th>Carrera</th>
+                <th>Fecha de Creación</th>
+                <th>Total de Créditos</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in planesDeEstudio)
+            {
+                <tr>
+                    <td>@plan.PlanEstudio</td>
+                    <td>@plan.Carrera?.NombreCarrera</td>
+                    <td>@plan.FechaCreacion.ToShortDateString()</td>
+                    <td>@plan.TotalCreditos</td>
+                    <td>@(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditarPlanEstudio(plan.IdPlanEstudio)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => EliminarPlanEstudio(plan.IdPlanEstudio)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<E_PlanEstudio> planesDeEstudio;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerTodosLosPlanes();
+    }
+
+    private async Task ObtenerTodosLosPlanes()
+    {
+        try
+        {
+            planesDeEstudio = await PlanEstudioServicios.ObtenerTodosLosPlanesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener los planes de estudio: {ex.Message}");
+        }
+    }
+
+    private void CrearPlanEstudio()
+    {
+        NavigationManager.NavigateTo("/planes/form");
+    }
+
+    private void EditarPlanEstudio(int idPlanEstudio)
+    {
+        NavigationManager.NavigateTo($"/planes/form/{idPlanEstudio}");
+    }
+
+    private async Task EliminarPlanEstudio(int idPlanEstudio)
+    {
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar este plan de estudio?");
+        if (confirmacion)
+        {
+            await PlanEstudioServicios.EliminarPlanAsync(idPlanEstudio);
+            await ObtenerTodosLosPlanes();
+        }
+    }
+}
