@@ -1,0 +1,68 @@
+﻿@page "/carreras/form"
+@page "/carreras/form/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios;
+@inject ICarreraServicios CarreraServicios
+@inject NavigationManager NavigationManager
+
+<h3>@(carrera.IdCarrera == 0 ? "Crear Nueva Carrera" : "Editar Carrera")</h3>
+
+<EditForm Model="@carrera" OnValidSubmit="GuardarCarrera">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="clave">Clave de Carrera</label>
+        <InputText id="clave" class="form-control" @bind-Value="carrera.ClaveCarrera" />
+    </div>
+
+    <div class="form-group">
+        <label for="nombre">Nombre de Carrera</label>
+        <InputText id="nombre" class="form-control" @bind-Value="carrera.NombreCarrera" />
+    </div>
+
+    <div class="form-group">
+        <label for="alias">Alias de Carrera</label>
+        <InputText id="alias" class="form-control" @bind-Value="carrera.AliasCarrera" />
+    </div>
+
+    <div class="form-group">
+        <label for="coordinador">Id Coordinador</label>
+        <InputNumber id="coordinador" class="form-control" @bind-Value="carrera.IdCoordinador" />
+    </div>
+
+    <div class="form-group form-check">
+        <InputCheckbox id="estado" class="form-check-input" @bind-Value="carrera.EstadoCarrera" />
+        <label class="form-check-label" for="estado">Activa</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_Carrera carrera = new E_Carrera();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            carrera = await CarreraServicios.ObtenerCarreraPorIdAsync(Id);
+        }
+    }
+
+    private async Task GuardarCarrera()
+    {
+        await CarreraServicios.GuardarCarreraAsync(carrera);
+        NavigationManager.NavigateTo("/carreras");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/carreras");
+    }
+}

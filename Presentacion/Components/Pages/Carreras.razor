@@ -1,0 +1,95 @@
+﻿@page "/carreras"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@inject ICarreraServicios CarreraServicios
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<h3>Gestión de Carreras</h3>
+
+<p>
+    <input type="text" placeholder="Buscar por nombre o clave" @bind="busqueda" @bind:event="oninput" />
+    <button @onclick="BuscarCarreras">Buscar</button>
+    <button class="btn btn-success" @onclick="CrearCarrera">Crear Nueva Carrera</button>
+</p>
+
+@if (carreras == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Clave</th>
+                <th>Nombre de Carrera</th>
+                <th>Alias</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var carrera in carreras)
+            {
+                <tr>
+                    <td>@carrera.ClaveCarrera</td>
+                    <td>@carrera.NombreCarrera</td>
+                    <td>@carrera.AliasCarrera</td>
+                    <td>@(carrera.EstadoCarrera ? "Activa" : "Inactiva")</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditarCarrera(carrera.IdCarrera)">Editar</button>
+                        <button class="btn btn-danger" @onclick="() => EliminarCarrera(carrera.IdCarrera)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<E_Carrera> carreras;
+    private string busqueda = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerTodasLasCarreras();
+    }
+
+    private async Task ObtenerTodasLasCarreras()
+    {
+        try
+        {
+            carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener las carreras: {ex.Message}");
+        }
+    }
+
+    private async Task BuscarCarreras()
+    {
+        carreras = await CarreraServicios.BuscarCarrerasAsync(busqueda);
+    }
+
+    private void CrearCarrera()
+    {
+        NavigationManager.NavigateTo("/carreras/form");
+    }
+
+    private void EditarCarrera(int idCarrera)
+    {
+        NavigationManager.NavigateTo($"/carreras/form/{idCarrera}");
+    }
+
+    private async Task EliminarCarrera(int idCarrera)
+    {
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "Estás seguro de que deseas eliminar esta carrera?");
+        if (confirmacion)
+        {
+            await CarreraServicios.EliminarCarreraAsync(idCarrera);
+            await ObtenerTodasLasCarreras();
+        }
+    }
+}
