@@ -22,6 +22,13 @@ namespace ProyectoDeCero2.Datos
             return await _contexto.PlanesDeEstudio.Include(p => p.Carrera).ToListAsync();
         }
 
+        public async Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraIdAsync(int idCarrera)
+        {
+            return await _contexto.PlanesDeEstudio
+                .Where(p => p.IdCarrera == idCarrera)
+                .ToListAsync();
+        }
+
         public async Task<E_PlanEstudio> ObtenerPorIdAsync(int id)
         {
             return await _contexto.PlanesDeEstudio.FindAsync(id);

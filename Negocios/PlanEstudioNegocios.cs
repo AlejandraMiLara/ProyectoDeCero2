@@ -32,7 +32,6 @@ namespace ProyectoDeCero2.Negocios
         {
             if (planEstudio.IdPlanEstudio == 0)
             {
-                // Asignar la fecha de creación actual solo cuando es un nuevo registro
                 planEstudio.FechaCreacion = DateTime.Now;
                 await _repositorioPlanEstudio.AgregarAsync(planEstudio);
             }
@@ -45,6 +44,11 @@ namespace ProyectoDeCero2.Negocios
         public async Task EliminarPlanAsync(int id)
         {
             await _repositorioPlanEstudio.EliminarAsync(id);
+        }
+
+        public async Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraAsync(int idCarrera)
+        {
+            return await _repositorioPlanEstudio.ObtenerPlanesPorCarreraIdAsync(idCarrera);
         }
     }
 }

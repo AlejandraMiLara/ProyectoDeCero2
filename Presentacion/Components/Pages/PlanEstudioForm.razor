@@ -6,29 +6,16 @@
 @inject ICarreraServicios CarreraServicios
 @inject NavigationManager NavigationManager
 
-<h3>@(planEstudio.IdPlanEstudio == 0 ? "Crear Nuevo Plan de Estudio" : "Editar Plan de Estudio")</h3>
+<h3>@(planEstudio.IdPlanEstudio == 0 ? $"Crear Nuevo Plan de Estudio para {carreraNombre}" : $"Editar Plan de Estudio para {carreraNombre}")</h3>
 
 <EditForm Model="@planEstudio" OnValidSubmit="GuardarPlanEstudio">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
+
     <div class="form-group">
         <label for="plan">Nombre del Plan</label>
         <InputText id="plan" class="form-control" @bind-Value="planEstudio.PlanEstudio" />
-    </div>
-
-    <div class="form-group">
-        <label for="carrera">Carrera Asociada</label>
-        <InputSelect id="carrera" class="form-control" @bind-Value="planEstudio.IdCarrera">
-            <option value="0">-- Seleccione una carrera --</option>
-            @if (carreras != null)
-            {
-                @foreach (var carrera in carreras)
-                {
-                    <option value="@carrera.IdCarrera">@carrera.NombreCarrera</option>
-                }
-            }
-        </InputSelect>
     </div>
 
     <div class="form-group">
@@ -80,29 +67,44 @@
     public int Id { get; set; }
 
     private E_PlanEstudio planEstudio = new E_PlanEstudio();
-    private List<E_Carrera> carreras;
-
-    protected override async Task OnInitializedAsync()
-    {
-        carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
-    }
+    private string carreraNombre = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id != 0)
         {
-            planEstudio = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id);
+            // Intenta cargar un plan de estudio existente
+            var planExistente = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id);
+            if (planExistente != null)
+            {
+                planEstudio = planExistente;
+            }
+            else
+            {
+                // Si el plan no existe, asume que el parámetro es un IdCarrera
+                planEstudio.IdCarrera = Id;
+            }
+        }
+
+        if (planEstudio.IdCarrera != 0)
+        {
+            var carreraAsociada = await CarreraServicios.ObtenerCarreraPorIdAsync(planEstudio.IdCarrera);
+            carreraNombre = carreraAsociada?.NombreCarrera ?? "Carrera no encontrada";
+        }
+        else
+        {
+            carreraNombre = "No especificada";
         }
     }
 
     private async Task GuardarPlanEstudio()
     {
         await PlanEstudioServicios.GuardarPlanAsync(planEstudio);
-        NavigationManager.NavigateTo("/planes");
+        NavigationManager.NavigateTo("/carreras");
     }
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/planes");
+        NavigationManager.NavigateTo("/carreras");
     }
 }

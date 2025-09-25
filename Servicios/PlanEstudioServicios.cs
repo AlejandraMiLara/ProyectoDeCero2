@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ProyectoDeCero2.Servicios
 {
     public class PlanEstudioServicios : IPlanEstudioServicios
@@ -35,6 +36,11 @@ namespace ProyectoDeCero2.Servicios
         public async Task EliminarPlanAsync(int id)
         {
             await _planEstudioNegocios.EliminarPlanAsync(id);
+        }
+
+        public async Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraAsync(int idCarrera)
+        {
+            return await _planEstudioNegocios.ObtenerPlanesPorCarreraAsync(idCarrera);
         }
     }
 }

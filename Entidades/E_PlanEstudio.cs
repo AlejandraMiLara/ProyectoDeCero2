@@ -24,7 +24,7 @@ namespace Entidades
         public string Comentarios { get; set; } = string.Empty;
         public bool EstadoPlanEstudio { get; set; } = true;
 
-        // Propiedad de navegación
+        // Prop
         public E_Carrera? Carrera { get; set; }
     }
 }

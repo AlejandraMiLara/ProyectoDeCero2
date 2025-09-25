@@ -13,5 +13,6 @@ namespace ProyectoDeCero2.Servicios
         Task<E_PlanEstudio> ObtenerPlanPorIdAsync(int id);
         Task GuardarPlanAsync(E_PlanEstudio planEstudio);
         Task EliminarPlanAsync(int id);
+        Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraAsync(int idCarrera);
     }
 }

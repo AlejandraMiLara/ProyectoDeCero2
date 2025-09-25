@@ -24,7 +24,7 @@ namespace ProyectoDeCero2.Datos
             modelBuilder.Entity<E_Carrera>().ToTable("Carrera");
             modelBuilder.Entity<E_PlanEstudio>().ToTable("PlanEstudio");
 
-            // Configuración de la relación
+            // config relat.
             modelBuilder.Entity<E_PlanEstudio>()
                 .HasOne(p => p.Carrera)
                 .WithMany()

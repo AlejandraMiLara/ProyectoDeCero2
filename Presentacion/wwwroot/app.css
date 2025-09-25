@@ -1,3 +1,24 @@
+.container {
+    display: grid;
+    justify-content: center;
+    padding: 5%;
+}
+
+.container header {
+    background-color: #34673a !important;
+    place-self: flex-end;
+    padding: 18%;
+    color: #fff;
+    box-shadow: -1px 2px 10px rgb(102 107 73 / 50%);
+}
+
+section p {
+    margin-top: 10px;
+    color: #919191;
+}
+
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
