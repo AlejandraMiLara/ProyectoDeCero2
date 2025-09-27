@@ -4,11 +4,16 @@
 @inject IPlanEstudioServicios PlanEstudioServicios
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject NavigationManager NavManager
 
 <h3>Gestión de Planes de Estudio</h3>
 
 <p>
     <button class="btn btn-success" @onclick="CrearPlanEstudio">Crear Nuevo Plan de Estudio</button>
+
+    <button class="btn btn-secondary" @onclick="IrAHome">
+        <i class="fas fa-home me-1" aria-hidden="true"></i> Ir a Inicio
+    </button>
 </p>
 
 @if (planesDeEstudio == null)
@@ -21,10 +26,13 @@ else
         <thead>
             <tr>
                 <th>Plan de Estudio</th>
-                <th>Carrera</th>
+
                 <th>Fecha de Creación</th>
+
                 <th>Total de Créditos</th>
+
                 <th>Estado</th>
+
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -52,6 +60,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         await ObtenerTodosLosPlanes();
+    }
+
+    private void IrAHome()
+    {
+        NavManager.NavigateTo("/");
     }
 
     private async Task ObtenerTodosLosPlanes()

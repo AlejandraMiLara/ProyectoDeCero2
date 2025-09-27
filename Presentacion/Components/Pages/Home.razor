@@ -1,14 +1,81 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Inicio - UABC</PageTitle>
 
-<div class="container">
-    <header>    
-        <h1>UABC</h1>
-        <h3>Sistema</h3>
-    </header>
+<div class="container-fluid p-0">
+    <div class="p-5 text-center bg-image" style="
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Facultad_de_Medicina_UABC_Campus_Mexicali_1.jpg');
+            height: 500px;
+            background-position: center;
+            background-size: cover;
+            position: relative;">
 
-    <section>
-        <p>Sistema en desarrollo</p>
-    </section>
+        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6); position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <div class="text-white">
+                    <h1 class="mb-3 display-3 fw-bold">Gestión Académica UABC</h1>
+                    <h4 class="mb-3">Simplificando la administración educativa</h4>
+                    <a data-mdb-ripple-init class="btn btn-outline-light btn-lg" href="/carreras" role="button">
+                        Explorar Carreras <i class="fas fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+
+    <div class="row text-center mb-5">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
+                    <h5 class="card-title fw-bold">Administración de Carreras</h5>
+                    <p class="card-text text-muted">
+                        Agrega, edita o elimina la oferta académica. Mantén el catálogo universitario siempre actualizado.
+                    </p>
+                    <a href="/carreras" class="btn btn-outline-primary btn-sm">Gestionar Carreras</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-file-alt fa-4x text-success mb-3"></i>
+                    <h5 class="card-title fw-bold">Gestión de Planes de Estudio</h5>
+                    <p class="card-text text-muted">
+                        Define la estructura curricular y los planes de estudio asociados a cada carrera.
+                    </p>
+                    <a href="#" class="btn btn-outline-success btn-sm">Gestionar Planes</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-search fa-4x text-info mb-3"></i>
+                    <h5 class="card-title fw-bold">Consulta y Búsqueda</h5>
+                    <p class="card-text text-muted">
+                        Encuentra rápidamente la información que necesitas con nuestra herramienta de búsqueda integrada.
+                    </p>
+                    <a href="/carreras" class="btn btn-outline-info btn-sm">Buscar Carreras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-5 mb-5 bg-dark text-white text-center rounded-3 shadow-lg">
+        <h2 class="display-6 fw-bold">Inicia tu gestión académica ahora</h2>
+        <p class="lead mt-3">
+            El sistema está listo para ayudarte a organizar y administrar la información de la oferta educativa de manera eficiente.
+        </p>
+        <hr class="my-4 border-light opacity-50" />
+        <a class="btn btn-primary btn-lg mt-3" href="/carreras" role="button">
+            Comenzar <i class="fas fa-play ms-2"></i>
+        </a>
+    </div>
+
 </div>

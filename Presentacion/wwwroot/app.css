@@ -1,81 +1,255 @@
-.container {
-    display: grid;
-    justify-content: center;
-    padding: 5%;
+/* Definición de variables CSS para la paleta de colores Institucionales */
+:root {
+    --color-uabc-blue: #003366; /* Azul Marino Institucional */
+    --color-uabc-gold: #f8b400; /* Amarillo/Oro (Detalles/Accentos) */
+    --color-primary: #004a8f; /* Azul de Acción (Botones) */
+    --color-success: #37885b; /* Verde Olivo (Éxito) */
+    --color-danger: #b02626; /* Rojo (Eliminar) */
+    --color-background: #f4f7f9; /* Fondo General Gris Claro */
+    --color-text: #333333; /* Texto principal */
+    --border-radius-lg: 0.5rem; /* Radio de borde para tarjetas y elementos */
+    --box-shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.container header {
-    background-color: #34673a !important;
-    place-self: flex-end;
-    padding: 18%;
-    color: #fff;
-    box-shadow: -1px 2px 10px rgb(102 107 73 / 50%);
-}
-
-section p {
-    margin-top: 10px;
-    color: #919191;
-}
-
-
-
+/* ------------------------------------ */
+/* TIPOGRAFÍA Y BASE */
+/* ------------------------------------ */
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--color-text);
+    background-color: var(--color-background);
 }
 
 a, .btn-link {
-    color: #006bb7;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
+
+    a:hover {
+        color: var(--color-uabc-gold);
+    }
+
+h1, h2, h3, h4 {
+    color: var(--color-uabc-blue);
+    font-weight: 600;
+}
+
+/* ------------------------------------ */
+/* NAVEGACIÓN (NavMenu y TopBar) */
+/* ------------------------------------ */
+
+/* Barra Superior */
+.top-row.ps-3.navbar.navbar-dark {
+    background-color: var(--color-uabc-blue) !important; /* Azul oscuro institucional */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 60px;
+    padding: 0 2rem !important;
+}
+
+.top-row a {
+    color: white !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+    .top-row a:hover {
+        color: var(--color-uabc-gold) !important;
+    }
+
+/* Sidebar Nav (Menú de navegación lateral) */
+.nav-scrollable {
+    background-color: #ffffff; /* Fondo blanco limpio */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    border-right: none;
+}
+    /* Items del Sidebar */
+    .nav-scrollable .nav-link {
+        color: var(--color-text);
+        padding: 12px 18px;
+        margin: 3px 0;
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+        .nav-scrollable .nav-link:hover {
+            background-color: #e9ecef;
+            border-left-color: var(--color-uabc-gold);
+        }
+
+        .nav-scrollable .nav-link.active {
+            background-color: var(--color-uabc-gold); /* Fondo destacado con color institucional */
+            color: var(--color-uabc-blue) !important;
+            border-left-color: var(--color-uabc-blue);
+            font-weight: 700;
+        }
+        /* Iconos en el NavMenu */
+        .nav-scrollable .nav-link span {
+            margin-right: 0.5rem;
+        }
+
+/* Limpieza de tus estilos anteriores que daban mal aspecto */
+.d-flex.justify-content-center.align-items-center.h-100 {
+    background-color: transparent !important; /* Ahora el banner lo controla el estilo de Home.razor */
+}
+
+.container header {
+    /* Eliminado: Usaremos clases de Bootstrap y un CSS más moderno */
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.container {
+    display: block; /* Volvemos a un flujo normal de documentos */
+    padding: 2rem 15px; /* Padding más estándar */
+}
+
+
+/* ------------------------------------ */
+/* BOTONES MODERNOS Y TRANSICIONES */
+/* ------------------------------------ */
+.btn {
+    border-radius: var(--border-radius-lg);
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
 .btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-h1:focus {
-    outline: none;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid #e50000;
-}
-
-.validation-message {
-    color: #e50000;
-}
-
-.blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
+    .btn-primary:hover {
+        background-color: var(--color-uabc-blue);
+        border-color: var(--color-uabc-blue);
     }
 
-.darker-border-checkbox.form-check-input {
-    border-color: #929292;
+.btn-success {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-    color: var(--bs-secondary-color);
-    text-align: end;
+    .btn-success:hover {
+        background-color: #2c6e45;
+        border-color: #2c6e45;
+    }
+
+.btn-danger {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-    text-align: start;
+    .btn-danger:hover {
+        background-color: #8c2020;
+        border-color: #8c2020;
+    }
+
+.btn-info { /* Nuevo estilo para el botón "Ver Planes" */
+    background-color: var(--color-uabc-gold);
+    border-color: var(--color-uabc-gold);
+    color: var(--color-uabc-blue);
 }
+
+    .btn-info:hover {
+        background-color: #e6a800;
+        border-color: #e6a800;
+        color: var(--color-uabc-blue);
+    }
+
+.btn-outline-light { /* Para el botón del Banner */
+    color: white !important;
+    border-color: white !important;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-light:hover {
+        background-color: white !important;
+        color: var(--color-uabc-blue) !important;
+    }
+
+/* ------------------------------------ */
+/* TABLAS, CARDS Y FORMULARIOS */
+/* ------------------------------------ */
+
+/* Estilo para tarjetas (Home.razor) */
+.card {
+    border: none;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-light);
+    transition: all 0.3s ease;
+}
+
+/* Tablas con aspecto profesional */
+.table {
+    margin-top: 1rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden; /* Necesario para que el border-radius funcione */
+    border-radius: var(--border-radius-lg);
+    background-color: white;
+    box-shadow: var(--box-shadow-light);
+}
+
+    .table thead th {
+        background-color: var(--color-uabc-blue);
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 1rem;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f9f9f9; /* Rayado sutil */
+    }
+
+    .table td, .table th {
+        border-top: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+/* Campos de Formulario */
+.form-control, .form-select, .form-check-input {
+    border-radius: var(--border-radius-lg);
+    transition: all 0.3s ease;
+}
+
+    .form-control:focus, .form-select:focus, .form-check-input:focus {
+        border-color: var(--color-uabc-gold);
+        box-shadow: 0 0 0 0.25rem rgba(0, 74, 143, 0.25);
+    }
+
+/* Estilo para el área destacada en Home.razor */
+.bg-dark {
+    background-color: var(--color-uabc-blue) !important;
+}
+
+/* Iconos de Bootstrap con color de acento */
+.fa-4x.text-primary {
+    color: var(--color-uabc-blue) !important;
+}
+
+.fa-4x.text-success {
+    color: var(--color-success) !important;
+}
+
+.fa-4x.text-info {
+    color: var(--color-uabc-gold) !important;
+}
+
+/* Otros estilos (dejar el resto como está si funcionan) */
+/* ... tus estilos de validación y error boundary aquí ... */

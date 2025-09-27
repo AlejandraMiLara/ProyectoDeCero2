@@ -5,14 +5,30 @@
 @inject IPlanEstudioServicios PlanEstudioServicios
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
 
-<h3>Gestión de Carreras y Planes de Estudio</h3>
+<h3 class="mt-4 mb-4 fw-bold">Gestión de Carreras</h3>
 
-<p>
-    <input type="text" placeholder="Buscar por nombre o clave" @bind="busqueda" @bind:event="oninput" />
-    <button class="btn btn-primary" @onclick="BuscarCarreras">Buscar</button>
-    <button class="btn btn-success" @onclick="CrearCarrera">Crear Nueva Carrera</button>
-</p>
+<div class="d-flex mb-4 align-items-center">
+    <input type="text"
+           class="form-control me-2"
+           style="max-width: 300px;"
+           placeholder="Buscar por nombre o clave"
+           @bind="busqueda"
+           @bind:event="oninput" />
+
+    <button class="btn btn-primary me-2" @onclick="BuscarCarreras">
+        <i class="fas fa-search me-1"></i> Buscar
+    </button>
+
+    <button class="btn btn-success" @onclick="CrearCarrera">
+        <i class="fas fa-plus-circle me-1"></i> Crear Nueva Carrera
+    </button>
+
+    <button class="btn btn-secondary" @onclick="IrAHome">
+        <i class="fas fa-home me-1" aria-hidden="true"></i> Ir a Inicio
+    </button>
+</div>
 
 @if (carreras == null)
 {
@@ -20,14 +36,14 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th>Clave</th>
                 <th>Nombre de Carrera</th>
                 <th>Alias</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th style="width: 250px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -37,13 +53,26 @@ else
                     <td>@carrera.ClaveCarrera</td>
                     <td>@carrera.NombreCarrera</td>
                     <td>@carrera.AliasCarrera</td>
-                    <td>@(carrera.EstadoCarrera ? "Activa" : "Inactiva")</td>
                     <td>
-                        <button class="btn btn-info" @onclick="() => ToggleRow(carrera.IdCarrera)">
-                            @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar Planes" : "Ver Planes")
+                        @if (carrera.EstadoCarrera)
+                        {
+                            <span class="badge text-bg-success">Activa</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">Inactiva</span>
+                        }
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-sm me-1" @onclick="() => ToggleRow(carrera.IdCarrera)">
+                            <i class="fas fa-chevron-down"></i> @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar" : "Ver")
                         </button>
-                        <button class="btn btn-primary" @onclick="() => EditarCarrera(carrera.IdCarrera)">Editar</button>
-                        <button class="btn btn-danger" @onclick="() => EliminarCarrera(carrera.IdCarrera)">Eliminar</button>
+                        <button class="btn btn-primary btn-sm me-1" @onclick="() => EditarCarrera(carrera.IdCarrera)">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarCarrera(carrera.IdCarrera)">
+                            <i class="fas fa-trash-alt"></i> X
+                        </button>
                     </td>
                 </tr>
                 if (filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera])
@@ -109,6 +138,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         await ObtenerTodasLasCarreras();
+    }
+
+    private void IrAHome()
+    {
+        NavManager.NavigateTo("/");
     }
 
     private async Task ObtenerTodasLasCarreras()
