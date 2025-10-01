@@ -46,7 +46,7 @@ else
                     <td>@(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")</td>
                     <td>
                         <button class="btn btn-primary" @onclick="() => EditarPlanEstudio(plan.IdPlanEstudio)">Editar</button>
-                        <button class="btn btn-danger" @onclick="() => EliminarPlanEstudio(plan.IdPlanEstudio)">Eliminar</button>
+                        <button class="btn btn-danger" @onclick="() => EliminarPlanEstudio(plan.IdPlanEstudio)">X</button>
                     </td>
                 </tr>
             }

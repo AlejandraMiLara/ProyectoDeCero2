@@ -73,15 +73,13 @@
     {
         if (Id != 0)
         {
-            // Intenta cargar un plan de estudio existente
-            var planExistente = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id);
-            if (planExistente != null)
-            {
-                planEstudio = planExistente;
-            }
+           var planExistente = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id);
+           if (planExistente != null)
+          {
+               planEstudio = planExistente;
+          }
             else
             {
-                // Si el plan no existe, asume que el parámetro es un IdCarrera
                 planEstudio.IdCarrera = Id;
             }
         }
@@ -99,12 +97,14 @@
 
     private async Task GuardarPlanEstudio()
     {
+        Console.WriteLine($"IdCarrera: {planEstudio.IdCarrera}");
+
         await PlanEstudioServicios.GuardarPlanAsync(planEstudio);
-        NavigationManager.NavigateTo("/carreras");
+        NavigationManager.NavigateTo("/planes");
     }
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/carreras");
+        NavigationManager.NavigateTo("/planes");
     }
 }
