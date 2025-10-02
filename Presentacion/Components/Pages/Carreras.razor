@@ -26,7 +26,9 @@
     </button>
 
     <button class="btn btn-secondary" @onclick="IrAHome">
+
         <i class="fas fa-home me-1" aria-hidden="true"></i> Ir a Inicio
+
     </button>
 </div>
 
@@ -54,18 +56,13 @@ else
                     <td>@carrera.NombreCarrera</td>
                     <td>@carrera.AliasCarrera</td>
                     <td>
-                        @if (carrera.EstadoCarrera)
-                        {
-                            <span class="badge text-bg-success">Activa</span>
-                        }
-                        else
-                        {
-                            <span class="badge text-bg-secondary">Inactiva</span>
-                        }
+                        <span class="badge @(carrera.EstadoCarrera ? "text-bg-success" : "text-bg-secondary")">
+                            @(carrera.EstadoCarrera ? "Activa" : "Inactiva")
+                        </span>
                     </td>
                     <td>
                         <button class="btn btn-info btn-sm me-1" @onclick="() => ToggleRow(carrera.IdCarrera)">
-                            <i class="fas fa-chevron-down"></i> @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar" : "Ver")
+                            <i class="fas fa-chevron-down"></i> @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar" : "Ver Planes")
                         </button>
                         <button class="btn btn-primary btn-sm me-1" @onclick="() => EditarCarrera(carrera.IdCarrera)">
                             <i class="fas fa-edit"></i> Editar
@@ -75,33 +72,33 @@ else
                         </button>
                     </td>
                 </tr>
-                if (filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera])
+                
+                @if (filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera])
                 {
                     <tr>
                         <td colspan="5">
-                            <h5 class="mt-3">Planes de Estudio</h5>
-                            <button class="btn btn-success btn-sm mb-3" @onclick="() => AgregarPlanDeEstudio(carrera.IdCarrera)">Agregar Plan</button>
-                            @if (planesCargados.ContainsKey(carrera.IdCarrera) && planesCargados[carrera.IdCarrera] != null)
-                            {
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre del Plan</th>
-                                            <th>Créditos Totales</th>
-                                            <th>Estado</th>
-                                            <th>Acciones del Plan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (!planesCargados[carrera.IdCarrera].Any())
-                                        {
+                            <div class="p-3 bg-light border rounded">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Planes de Estudio Asignados</h5>
+                                    
+                                    <button class="btn btn-info btn-sm" @onclick="() => GestionarPlanes(carrera.IdCarrera)">
+                                        <i class="fas fa-tasks"></i> Administrar Planes
+                                    </button>
+                                </div>
+                                
+                                @if (carrera.PlanesDeEstudio != null && carrera.PlanesDeEstudio.Any())
+                                {
+                                    <table class="table table-bordered table-sm mb-0">
+                                        <thead class="table-dark">
                                             <tr>
-                                                <td colspan="4">No hay planes de estudio para esta carrera.</td>
+                                                <th>Nombre del Plan</th>
+                                                <th>Créditos Totales</th>
+                                                <th>Estado</th>
+                                                <th>Acciones del Plan</th>
                                             </tr>
-                                        }
-                                        else
-                                        {
-                                            @foreach (var plan in planesCargados[carrera.IdCarrera])
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var plan in carrera.PlanesDeEstudio)
                                             {
                                                 <tr>
                                                     <td>@plan.PlanEstudio</td>
@@ -113,14 +110,14 @@ else
                                                     </td>
                                                 </tr>
                                             }
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                            else
-                            {
-                                <p><em>Cargando planes de estudio...</em></p>
-                            }
+                                        </tbody>
+                                    </table>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted mb-0">No hay planes de estudio asignados a esta carrera.</p>
+                                }
+                            </div>
                         </td>
                     </tr>
                 }
@@ -133,35 +130,25 @@ else
     private List<E_Carrera> carreras;
     private string busqueda = string.Empty;
     private Dictionary<int, bool> filaExpandida = new Dictionary<int, bool>();
-    private Dictionary<int, List<E_PlanEstudio>> planesCargados = new Dictionary<int, List<E_PlanEstudio>>();
+
+    // La variable 'planesCargados' ya no es necesaria.
 
     protected override async Task OnInitializedAsync()
     {
         await ObtenerTodasLasCarreras();
     }
 
-    private void IrAHome()
-    {
-        NavManager.NavigateTo("/");
-    }
-
     private async Task ObtenerTodasLasCarreras()
     {
-        try
-        {
-            carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener las carreras: {ex.Message}");
-        }
+        carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
+        // Limpiamos el estado de las filas expandidas al recargar
+        filaExpandida.Clear();
     }
 
     private async Task BuscarCarreras()
     {
         carreras = await CarreraServicios.BuscarCarrerasAsync(busqueda);
         filaExpandida.Clear();
-        planesCargados.Clear();
     }
 
     private void CrearCarrera()
@@ -180,13 +167,14 @@ else
         if (confirmacion)
         {
             await CarreraServicios.EliminarCarreraAsync(idCarrera);
-            await ObtenerTodasLasCarreras();
+            await ObtenerTodasLasCarreras(); // Recarga toda la lista para mantener la consistencia
         }
     }
 
-    private void AgregarPlanDeEstudio(int idCarrera)
+    // --- NUEVO MÉTODO PARA NAVEGAR A LA PÁGINA DE GESTIÓN ---
+    private void GestionarPlanes(int idCarrera)
     {
-        NavigationManager.NavigateTo($"/planes/form/{idCarrera}");
+        NavigationManager.NavigateTo($"/carreras/{idCarrera}/gestionar-planes");
     }
 
     private void EditarPlanDeEstudio(int idPlanEstudio)
@@ -196,43 +184,34 @@ else
 
     private async Task EliminarPlanDeEstudio(int idPlanEstudio)
     {
-        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar este plan de estudio?");
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "Esto eliminará el plan de estudio DE FORMA PERMANENTE para TODAS las carreras. ¿Estás seguro?");
         if (confirmacion)
         {
             await PlanEstudioServicios.EliminarPlanAsync(idPlanEstudio);
-            await ObtenerTodosLosPlanesDeCarrera(filaExpandida.FirstOrDefault(x => x.Value).Key);
+            await ObtenerTodasLasCarreras();
         }
     }
 
-    private async Task ToggleRow(int idCarrera)
+
+    private void ToggleRow(int idCarrera)
     {
-        if (filaExpandida.ContainsKey(idCarrera) && filaExpandida[idCarrera])
+
+        if (filaExpandida.TryGetValue(idCarrera, out bool isExpanded) && isExpanded)
         {
-            // Ocultar la fila
             filaExpandida[idCarrera] = false;
         }
         else
         {
-            // Ocultar todas las otras filas y mostrar solo la seleccionada
-            filaExpandida.Clear();
-            planesCargados.Clear();
             filaExpandida[idCarrera] = true;
-
-            // Cargar los planes de estudio
-            await ObtenerTodosLosPlanesDeCarrera(idCarrera);
         }
     }
 
-    private async Task ObtenerTodosLosPlanesDeCarrera(int idCarrera)
+    private void IrAHome()
+
     {
-        try
-        {
-            var planes = await PlanEstudioServicios.ObtenerPlanesPorCarreraAsync(idCarrera);
-            planesCargados[idCarrera] = planes;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al obtener planes para la carrera {idCarrera}: {ex.Message}");
-        }
+
+        NavManager.NavigateTo("/");
+
     }
+
 }

@@ -14,5 +14,6 @@ namespace ProyectoDeCero2.Servicios
         Task EliminarCarreraAsync(int id);
         Task GuardarCarreraAsync(E_Carrera carrera);
         Task<E_Carrera> ObtenerCarreraPorIdAsync(int id);
+        Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsPlanes);
     }
 }

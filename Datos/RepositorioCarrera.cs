@@ -20,12 +20,16 @@ namespace ProyectoDeCero2.Datos
 
         public async Task<List<E_Carrera>> ObtenerTodasAsync()
         {
-            return await _contexto.Carreras.ToListAsync();
+            return await _contexto.Carreras
+                .Include(c => c.PlanesDeEstudio)
+                .ToListAsync();
         }
 
         public async Task<E_Carrera> ObtenerPorIdAsync(int id)
         {
-            return await _contexto.Carreras.FindAsync(id);
+            return await _contexto.Carreras
+                .Include(c => c.PlanesDeEstudio)
+                .FirstOrDefaultAsync(c => c.IdCarrera == id);
         }
 
         public async Task AgregarAsync(E_Carrera carrera)
@@ -54,7 +58,29 @@ namespace ProyectoDeCero2.Datos
         {
             return await _contexto.Carreras
                 .Where(c => c.NombreCarrera.Contains(busqueda) || c.ClaveCarrera.Contains(busqueda))
+                .Include(c => c.PlanesDeEstudio)
                 .ToListAsync();
+        }
+
+
+        public async Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsNuevosPlanes)
+        {
+            var carrera = await _contexto.Carreras
+                .Include(c => c.PlanesDeEstudio)
+                .FirstOrDefaultAsync(c => c.IdCarrera == idCarrera);
+
+            if (carrera == null)
+            {
+                return;
+            }
+
+            var nuevosPlanes = await _contexto.PlanesDeEstudio
+                .Where(p => idsNuevosPlanes.Contains(p.IdPlanEstudio))
+                .ToListAsync();
+
+            carrera.PlanesDeEstudio = nuevosPlanes;
+
+            await _contexto.SaveChangesAsync();
         }
     }
 }

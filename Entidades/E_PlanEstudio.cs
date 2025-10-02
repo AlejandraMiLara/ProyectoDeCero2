@@ -12,7 +12,6 @@ namespace Entidades
     {
         [Key]
         public int IdPlanEstudio { get; set; }
-        public int IdCarrera { get; set; }
         public string PlanEstudio { get; set; } = string.Empty;
         public DateTime FechaCreacion { get; set; }
         public int TotalCreditos { get; set; }
@@ -24,7 +23,7 @@ namespace Entidades
         public string Comentarios { get; set; } = string.Empty;
         public bool EstadoPlanEstudio { get; set; } = true;
 
-        // Prop
-        public E_Carrera? Carrera { get; set; }
+        public ICollection<E_Carrera> Carreras { get; set; } = new List<E_Carrera>();
+
     }
 }

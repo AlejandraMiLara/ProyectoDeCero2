@@ -42,5 +42,10 @@ namespace Servicios
         {
             return await _carreraNegocios.ObtenerCarreraPorIdAsync(id);
         }
+
+        public async Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsPlanes)
+        {
+            await _carreraNegocios.ActualizarPlanesDeCarreraAsync(idCarrera, idsPlanes);
+        }
     }
 }

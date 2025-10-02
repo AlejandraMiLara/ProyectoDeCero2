@@ -19,19 +19,21 @@ namespace ProyectoDeCero2.Datos
 
         public async Task<List<E_PlanEstudio>> ObtenerTodosAsync()
         {
-            return await _contexto.PlanesDeEstudio.Include(p => p.Carrera).ToListAsync();
+            return await _contexto.PlanesDeEstudio.Include(p => p.Carreras).ToListAsync();
         }
 
         public async Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraIdAsync(int idCarrera)
         {
             return await _contexto.PlanesDeEstudio
-                .Where(p => p.IdCarrera == idCarrera)
+                .Where(p => p.Carreras.Any(c => c.IdCarrera == idCarrera))
                 .ToListAsync();
         }
 
         public async Task<E_PlanEstudio> ObtenerPorIdAsync(int id)
         {
-            return await _contexto.PlanesDeEstudio.FindAsync(id);
+            return await _contexto.PlanesDeEstudio
+                .Include(p => p.Carreras)
+                .FirstOrDefaultAsync(p => p.IdPlanEstudio == id);
         }
 
         public async Task AgregarAsync(E_PlanEstudio planEstudio)

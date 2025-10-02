@@ -25,10 +25,10 @@ namespace ProyectoDeCero2.Datos
             modelBuilder.Entity<E_PlanEstudio>().ToTable("PlanEstudio");
 
             // config relat.
-            modelBuilder.Entity<E_PlanEstudio>()
-                .HasOne(p => p.Carrera)
-                .WithMany()
-                .HasForeignKey(p => p.IdCarrera);
+            modelBuilder.Entity<E_Carrera>()
+                .HasMany(c => c.PlanesDeEstudio)
+                .WithMany(p => p.Carreras) 
+                .UsingEntity(j => j.ToTable("CarreraPlanEstudio"));
         }
     }
 }

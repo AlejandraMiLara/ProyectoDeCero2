@@ -53,5 +53,10 @@ namespace ProyectoDeCero2.Negocios
         {
             return await _repositorioCarrera.ObtenerPorIdAsync(id);
         }
+
+        public async Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsPlanes)
+        {
+            await _repositorioCarrera.ActualizarPlanesDeCarreraAsync(idCarrera, idsPlanes);
+        }
     }
 }

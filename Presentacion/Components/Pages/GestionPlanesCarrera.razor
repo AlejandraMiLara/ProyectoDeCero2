@@ -1,0 +1,77 @@
+﻿@page "/carreras/{IdCarrera:int}/gestionar-planes"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@inject ICarreraServicios CarreraServicios
+@inject IPlanEstudioServicios PlanEstudioServicios
+@inject NavigationManager NavigationManager
+
+@if (carrera == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <h3 class="mb-4">Gestionar Planes para la Carrera: <strong>@carrera.NombreCarrera</strong></h3>
+
+    <div class="list-group">
+        @foreach (var plan in todosLosPlanes)
+        {
+            <label class="list-group-item">
+                <input class="form-check-input me-2" type="checkbox"
+                       checked="@(idsPlanesSeleccionados.Contains(plan.IdPlanEstudio))"
+                       @onchange="() => ToggleSeleccionPlan(plan.IdPlanEstudio)" />
+                @plan.PlanEstudio
+            </label>
+        }
+    </div>
+
+    <div class="mt-4">
+        <button class="btn btn-primary" @onclick="GuardarCambios">Guardar Cambios</button>
+        <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int IdCarrera { get; set; }
+
+    private E_Carrera carrera;
+    private List<E_PlanEstudio> todosLosPlanes;
+    private HashSet<int> idsPlanesSeleccionados = new HashSet<int>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        carrera = await CarreraServicios.ObtenerCarreraPorIdAsync(IdCarrera);
+
+        todosLosPlanes = await PlanEstudioServicios.ObtenerTodosLosPlanesAsync();
+
+        if (carrera != null)
+        {
+            idsPlanesSeleccionados = new HashSet<int>(carrera.PlanesDeEstudio.Select(p => p.IdPlanEstudio));
+        }
+    }
+
+    private void ToggleSeleccionPlan(int idPlan)
+    {
+        if (idsPlanesSeleccionados.Contains(idPlan))
+        {
+            idsPlanesSeleccionados.Remove(idPlan);
+        }
+        else
+        {
+            idsPlanesSeleccionados.Add(idPlan);
+        }
+    }
+
+    private async Task GuardarCambios()
+    {
+        await CarreraServicios.ActualizarPlanesDeCarreraAsync(IdCarrera, idsPlanesSeleccionados.ToList());
+        NavigationManager.NavigateTo("/carreras");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/carreras");
+    }
+}
