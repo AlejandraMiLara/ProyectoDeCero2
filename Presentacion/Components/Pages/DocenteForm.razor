@@ -1,0 +1,79 @@
+﻿@page "/docentes/form"
+@page "/docentes/form/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios;
+@inject IDocenteServicios DocenteServicios
+@inject NavigationManager NavigationManager
+
+<h3>@(docente.IdDocente == 0 ? "Agregar Docente" : "Editar Docente")</h3>
+
+
+<EditForm Model="@docente" OnValidSubmit="GuardarDocente">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="numEmp">Numero de Empleado</label>
+        <InputText id="numEmp" class="form-control" @bind-Value="docente.NumeroEmpleadoDocente" />
+    </div>
+
+    <div class="form-group">
+        <label for="nombres">Nombre/s</label>
+        <InputText id="nombres" class="form-control" @bind-Value="docente.NombreDocente" />
+    </div>
+
+    <div class="form-group">
+        <label for="ap">Apellido Paterno</label>
+        <InputText id="ap" class="form-control" @bind-Value="docente.ApPatDocente" />
+    </div>
+
+    <div class="form-group">
+        <label for="am">Apellido Materno</label>
+        <InputText id="am" class="form-control" @bind-Value="docente.ApMatDocente" />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="docente.EmailDocente" />
+    </div>
+
+    <div class="form-group form-check">
+        <InputCheckbox id="estado" class="form-check-input" @bind-Value="docente.EstadoDocente" />
+        <label class="form-check-label" for="estado">Estado Activo</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+
+    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
+
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_Docente docente = new E_Docente();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            docente = await DocenteServicios.ObtenerDocentePorIdAsync(Id);
+        }
+    }
+
+    private async Task GuardarDocente()
+    {
+        await DocenteServicios.GuardarDocenteAsync(docente);
+        NavigationManager.NavigateTo("/docentes");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/docentes");
+    }
+}

@@ -7,12 +7,18 @@ using ProyectoDeCero2.Negocios;
 using ProyectoDeCero2.Servicios;
 using Servicios;
 using Negocios;
+using Datos;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Inyección de Docentes
+builder.Services.AddScoped<RepositorioDocente>();
+builder.Services.AddScoped<DocenteNegocios>();
+builder.Services.AddScoped<IDocenteServicios, DocenteServicios>();
 
 //Inyección Materias
 builder.Services.AddScoped<RepositorioMateria>();

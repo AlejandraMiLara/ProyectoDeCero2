@@ -1,0 +1,125 @@
+﻿@page "/docentes"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios
+@inject IDocenteServicios DocenteServicios
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
+
+<h3 class="mt-4 mb-4 fw-bold">Gestión de Docentes</h3>
+
+<div class="d-flex align-items-center">
+    <input type="text"
+           class="form-control me-2"
+           style="max-width: 300px;"
+           placeholder="Buscar por Número de Empleado, Nombre o Apellidos"
+           @bind="busqueda"
+           @bind:event="oninput" />
+
+    <button class="btn btn-primary me-2" @onclick="BuscarDocente">
+        Buscar
+    </button>
+
+    <button class="btn btn-success" @onclick="CrearDocente">
+        Agregar Nuevo Docente
+    </button>
+
+    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
+        Ir a Inicio
+    </button>
+
+</div>
+
+@if (docentes == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Numero de Empleado</th>
+                <th>Nombre completo</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th style="width: 250px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var docente in docentes)
+            {
+                <tr>
+                    <td>@docente.NumeroEmpleadoDocente</td>
+                    <td>@docente.NombreDocente @docente.ApPatDocente @docente.ApMatDocente</td>
+                    <td>@docente.EmailDocente</td>
+                    <td>
+                        <span class="badge @(docente.EstadoDocente ? "text-bg-success" : "text-bg-secondary")">
+                            @(docente.EstadoDocente ? "Activo" : "Inactivo")
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => EditarDocente(docente.IdDocente)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarDocente(docente.IdDocente)">X</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    private string busqueda = string.Empty;
+    private List<E_Docente> docentes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerTodosLosDocentesAsync();
+    }
+
+    private void CrearDocente()
+    {
+        NavigationManager.NavigateTo("/docentes/form");
+    }
+
+    private void EditarDocente(int IdDocente)
+    {
+        NavigationManager.NavigateTo($"/docentes/form/{IdDocente}");
+    }   
+
+    private async Task BuscarDocente()
+    {
+        docentes = await DocenteServicios.BuscarDocenteAsync(busqueda);
+    }
+
+    private async Task ObtenerTodosLosDocentesAsync()
+    {
+        try
+        {
+            docentes = await DocenteServicios.ObtenerTodosLosDocentesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener todos los docentes: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarDocente(int idDocente)
+    {
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿estás seguro de eliminar docente?");
+
+        if (confirmacion)
+        {
+            await DocenteServicios.EliminarDocenteAsync(idDocente);
+            await ObtenerTodosLosDocentesAsync();
+        }
+    }
+
+    private void IrAHome()
+    {
+        NavManager.NavigateTo("/");
+    }
+}
