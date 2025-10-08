@@ -19,10 +19,13 @@ namespace ProyectoDeCero2.Datos
         public DbSet<E_Carrera> Carreras { get; set; }
         public DbSet<E_PlanEstudio> PlanesDeEstudio { get; set; }
 
+        public DbSet<E_Materia> Materias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<E_Carrera>().ToTable("Carrera");
             modelBuilder.Entity<E_PlanEstudio>().ToTable("PlanEstudio");
+            modelBuilder.Entity<E_Materia>().ToTable("Materia");
 
             // config relat.
             modelBuilder.Entity<E_Carrera>()

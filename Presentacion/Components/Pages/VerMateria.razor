@@ -1,0 +1,100 @@
+﻿@page "/materias/ver/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios;
+@inject IMateriaServicios MateriaServicios
+@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
+
+<h3 class="mt-4 mb-4 fw-bold">Ver Materia</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        Información de la Materia
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
+            <div class="col-md-6"><strong>Clave de Materia:</strong> @materia.ClaveMateria</div>
+            <div class="col-md-6"><strong>Materia:</strong> @materia.PropositoMateria</div>
+        </div>
+
+        <br />
+
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Estado: </strong><span class="badge @(materia.EstadoMateria ? "text-bg-success" : "text-bg-secondary")">
+                    @(materia.EstadoMateria ? "Activa" : "Inactiva")
+                </span>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <div class="col-md-4"><strong>HC:</strong> @materia.HCMateria</div>
+                        <div class="col-md-4"><strong>HL:</strong> @materia.HLMateria</div>
+                        <div class="col-md-4"><strong>HT:</strong> @materia.HTMateria</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-3"><strong>HPC:</strong> @materia.HPCMateria</div>
+                        <div class="col-md-3"><strong>HCL:</strong> @materia.HCLMateria</div>
+                        <div class="col-md-3"><strong>HE:</strong> @materia.HEMateria</div>
+                        <div class="col-md-3"><strong>CR:</strong> @materia.CRMateria</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row mb-2">
+            <div class="col-md-6"><strong>Competencia:</strong> @materia.CompetenciaMateria</div>
+            <div class="col-md-6"><strong>Evidencia:</strong> @materia.EvidenciaMateria</div>
+        </div>
+
+        <br />
+
+        <div class="row mb-2">
+            <div class="col-md-6"><strong>Metodología:</strong> @materia.MetodologiaMateria</div>
+            <div class="col-md-6"><strong>Criterios:</strong> @materia.CriteriosMateria</div>
+        </div>
+
+        <br />
+
+        <div class="row mb-2">
+            <div class="col-md-6"><strong>Bibliografía Básica:</strong> @materia.BibliografiaBasicaMateria</div>
+            <div class="col-md-6"><strong>Bibliografía Complementaria:</strong> @materia.BibliografiaCompletenciaMateria</div>
+        </div>
+
+        <br />
+
+        <div class="row mb-2">
+            <div class="col-md-6"><strong>Ruta PUA:</strong> @materia.PathPUAMateria</div>
+            <div class="col-md-6"><strong>Perfil Docente:</strong> @materia.PerfilDocente</div>
+        </div>
+
+    </div>
+</div>
+
+<button class="btn btn-secondary" @onclick="Volver">Volver</button>
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_Materia materia = new E_Materia();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            materia = await MateriaServicios.ObtenerMateriaPorIdAsync(Id);
+        }
+    }
+
+    private void Volver()
+    {
+        NavManager.NavigateTo("/materias");
+    }
+}

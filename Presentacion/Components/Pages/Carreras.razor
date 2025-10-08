@@ -134,8 +134,6 @@ else
     private string busqueda = string.Empty;
     private Dictionary<int, bool> filaExpandida = new Dictionary<int, bool>();
 
-    // La variable 'planesCargados' ya no es necesaria.
-
     protected override async Task OnInitializedAsync()
     {
         await ObtenerTodasLasCarreras();
@@ -144,7 +142,6 @@ else
     private async Task ObtenerTodasLasCarreras()
     {
         carreras = await CarreraServicios.ObtenerTodasLasCarrerasAsync();
-        // Limpiamos el estado de las filas expandidas al recargar
         filaExpandida.Clear();
     }
 

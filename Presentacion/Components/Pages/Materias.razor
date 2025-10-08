@@ -1,0 +1,146 @@
+﻿@page "/materias"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios
+@inject IMateriaServicios MateriaServicios
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
+
+<h3 class="mt-4 mb-4 fw-bold">Gestión de Materias</h3>
+
+<div class="d-flex align-items-center">
+    <input type="text"
+           class="form-control me-2"
+           style="max-width: 300px;"
+           placeholder="Buscar por CLAVE"
+           @bind="busqueda"
+           @bind:event="oninput" />
+
+    <button class="btn btn-primary me-2" @onclick="BuscarMaterias">
+        Buscar
+    </button>
+
+    <button class="btn btn-success" @onclick="CrearMateria">
+        Crear Nueva Materia
+    </button>
+
+    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
+        Ir a Inicio
+    </button>
+
+</div>
+
+@if (materias == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Clave</th>
+                <th>Materia</th>
+                <th>HC</th>
+                <th>HL</th>
+                <th>HT</th>
+                <th>HPC</th>
+                <th>HCL</th>
+                <th>HE</th>
+                <th>CR</th>
+                <th>Estado</th>
+                <th style="width: 250px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var materia in materias)
+            {
+                <tr>
+                    <td>@materia.ClaveMateria</td>
+                    <td>@materia.PropositoMateria</td>
+                    <td>@materia.HCMateria</td>
+                    <td>@materia.HLMateria</td>
+                    <td>@materia.HTMateria</td>
+                    <td>@materia.HPCMateria</td>
+                    <td>@materia.HCLMateria</td>
+                    <td>@materia.HEMateria</td>
+                    <td>@materia.CRMateria</td>
+                    <td>
+                        <span class="badge @(materia.EstadoMateria ? "text-bg-success" : "text-bg-secondary")">
+                            @(materia.EstadoMateria ? "Activa" : "Inactiva")
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-sm" @onclick="() => VerMateria(materia.IdMateria)">Ver</button>
+                        <button class="btn btn-primary btn-sm" @onclick="() => EditarMateria(materia.IdMateria)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarMateria(materia.IdMateria)">X</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+
+@code {
+    private string busqueda = string.Empty;
+    private List<E_Materia> materias;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerTodasLasMateriasAsync();
+    }
+
+    private void CrearMateria()
+    {
+        NavigationManager.NavigateTo("/materias/form");
+    }
+
+    private void EditarMateria(int IdMateria)
+    {
+        NavigationManager.NavigateTo($"/materias/form/{IdMateria}");
+    }
+
+    private void VerMateria(int IdMateria)
+    {
+        NavigationManager.NavigateTo($"/materias/ver/{IdMateria}");
+    }
+
+    private async Task BuscarMaterias()
+    {
+        materias = await MateriaServicios.BuscarMateriaAsync(busqueda);
+    }
+
+    private async Task ObtenerTodasLasMateriasAsync()
+    {
+        try
+        {
+            materias = await MateriaServicios.ObtenerTodasLasMateriasAsync();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error al obtener todos las materias: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarMateria(int idMateria)
+    {
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿estás seguro de eliminar materia?");
+
+        if (confirmacion)
+        {
+            await MateriaServicios.EliminarMateriaAsync(idMateria);
+            await ObtenerTodasLasMateriasAsync();
+        }
+    }
+
+    private void IrAHome()
+    {
+        NavManager.NavigateTo("/");
+    }
+}

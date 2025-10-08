@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoDeCero2.Datos;
 
@@ -11,9 +12,11 @@ using ProyectoDeCero2.Datos;
 namespace Datos.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20251007214055_MateriaDB")]
+    partial class MateriaDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,11 +102,8 @@ namespace Datos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("E_MateriaIdMateria")
+                    b.Property<int>("EstadoMateria")
                         .HasColumnType("int");
-
-                    b.Property<bool>("EstadoMateria")
-                        .HasColumnType("bit");
 
                     b.Property<string>("EvidenciaMateria")
                         .IsRequired()
@@ -144,8 +144,6 @@ namespace Datos.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdMateria");
-
-                    b.HasIndex("E_MateriaIdMateria");
 
                     b.ToTable("Materia", (string)null);
                 });
@@ -211,18 +209,6 @@ namespace Datos.Migrations
                         .HasForeignKey("PlanesDeEstudioIdPlanEstudio")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entidades.E_Materia", b =>
-                {
-                    b.HasOne("Entidades.E_Materia", null)
-                        .WithMany("Materias")
-                        .HasForeignKey("E_MateriaIdMateria");
-                });
-
-            modelBuilder.Entity("Entidades.E_Materia", b =>
-                {
-                    b.Navigation("Materias");
                 });
 #pragma warning restore 612, 618
         }

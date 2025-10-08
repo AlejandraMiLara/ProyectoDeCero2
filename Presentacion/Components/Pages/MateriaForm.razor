@@ -1,0 +1,138 @@
+﻿@page "/materias/form"
+@page "/materias/form/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios;
+@inject IMateriaServicios MateriaServicios
+@inject NavigationManager NavigationManager
+
+<h3>@(materia.IdMateria == 0 ? "Crear Nueva Materia" : "Editar Materia")</h3>
+
+<EditForm Model="@materia" OnValidSubmit="GuardarCarrera">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="clave">Clave de Materia</label>
+        <InputText id="clave" class="form-control" @bind-Value="materia.ClaveMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="materia">Materia</label>
+        <InputText id="materia" class="form-control" @bind-Value="materia.PropositoMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hc">HC</label>
+        <InputNumber id="hc" class="form-control" @bind-Value="materia.HCMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hc">HL</label>
+        <InputNumber id="hl" class="form-control" @bind-Value="materia.HLMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="ht">HT</label>
+        <InputNumber id="ht" class="form-control" @bind-Value="materia.HTMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hpc">HPC</label>
+        <InputNumber id="hpc" class="form-control" @bind-Value="materia.HPCMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hc">HCL</label>
+        <InputNumber id="hcl" class="form-control" @bind-Value="materia.HCLMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hc">HE</label>
+        <InputNumber id="he" class="form-control" @bind-Value="materia.HEMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="hc">CR</label>
+        <InputNumber id="cr" class="form-control" @bind-Value="materia.CRMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="competencia">Competencia</label>
+        <InputText id="competencia" class="form-control" @bind-Value="materia.CompetenciaMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="evidencia">Evidencia Materia</label>
+        <InputText id="evidencia" class="form-control" @bind-Value="materia.EvidenciaMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="metodologia">Metodologia</label>
+        <InputText id="metodologia" class="form-control" @bind-Value="materia.MetodologiaMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="criterios">Criterios</label>
+        <InputTextArea id="criterios" class="form-control" @bind-Value="materia.CriteriosMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="biba">Bibliografía Básica</label>
+        <InputTextArea id="biba" class="form-control" @bind-Value="materia.BibliografiaBasicaMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="bico">Bibliografía Complementaria</label>
+        <InputTextArea id="bico" class="form-control" @bind-Value="materia.BibliografiaCompletenciaMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="pua">Ruta PUA</label>
+        <InputText id="pua" class="form-control" @bind-Value="materia.PathPUAMateria" />
+    </div>
+
+    <div class="form-group">
+        <label for="perdoc">Perfil Docente</label>
+        <InputTextArea id="perdoc" class="form-control" @bind-Value="materia.PerfilDocente" />
+    </div>
+
+    <div class="form-group form-check">
+        <InputCheckbox id="estado" class="form-check-input" @bind-Value="materia.EstadoMateria" />
+        <label class="form-check-label" for="estado">Estado Activo</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+
+    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
+
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_Materia materia = new E_Materia();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            materia = await MateriaServicios.ObtenerMateriaPorIdAsync(Id);
+        }
+    }
+
+    private async Task GuardarCarrera()
+    {
+        await MateriaServicios.GuardarMateriaAsync(materia);
+        NavigationManager.NavigateTo("/materias");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/materias");
+    }
+}

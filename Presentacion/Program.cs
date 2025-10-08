@@ -6,6 +6,7 @@ using ProyectoDeCero2.Datos;
 using ProyectoDeCero2.Negocios;
 using ProyectoDeCero2.Servicios;
 using Servicios;
+using Negocios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,17 +14,23 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Inyectar las dependencias de las capas de Carrera
+//Inyección Materias
+builder.Services.AddScoped<RepositorioMateria>();
+builder.Services.AddScoped<MateriaNegocios>();
+builder.Services.AddScoped<IMateriaServicios, MateriaServicios>();
+
+
+// Inyección Carrera
 builder.Services.AddScoped<RepositorioCarrera>();
 builder.Services.AddScoped<CarreraNegocios>();
 builder.Services.AddScoped<ICarreraServicios, CarreraServicios>();
 
-// Inyectar las nuevas dependencias de las capas de PlanEstudio
+// Inyección PlanEstudio
 builder.Services.AddScoped<RepositorioPlanEstudio>();
 builder.Services.AddScoped<PlanEstudioNegocios>();
 builder.Services.AddScoped<IPlanEstudioServicios, PlanEstudioServicios>();
 
-// Configurar y conectar a la base de datos
+// DBCONEX
 var connectionString = builder.Configuration.GetConnectionString("ConnectionToDb");
 
 if (string.IsNullOrEmpty(connectionString))

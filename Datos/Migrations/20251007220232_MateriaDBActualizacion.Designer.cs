@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoDeCero2.Datos;
 
@@ -11,9 +12,11 @@ using ProyectoDeCero2.Datos;
 namespace Datos.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20251007220232_MateriaDBActualizacion")]
+    partial class MateriaDBActualizacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +105,8 @@ namespace Datos.Migrations
                     b.Property<int?>("E_MateriaIdMateria")
                         .HasColumnType("int");
 
-                    b.Property<bool>("EstadoMateria")
-                        .HasColumnType("bit");
+                    b.Property<int>("EstadoMateria")
+                        .HasColumnType("int");
 
                     b.Property<string>("EvidenciaMateria")
                         .IsRequired()
