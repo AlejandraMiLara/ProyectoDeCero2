@@ -23,12 +23,15 @@ namespace ProyectoDeCero2.Datos
 
         public DbSet<E_Docente> Docentes { get; set; }
 
+        public DbSet<E_NivelAcademico> NivelesAcademicos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<E_Carrera>().ToTable("Carrera");
             modelBuilder.Entity<E_PlanEstudio>().ToTable("PlanEstudio");
             modelBuilder.Entity<E_Materia>().ToTable("Materia");
             modelBuilder.Entity<E_Docente>().ToTable("Docente");
+            modelBuilder.Entity<E_NivelAcademico>().ToTable("NivelAcademico");
 
             // config relat.
             modelBuilder.Entity<E_Carrera>()

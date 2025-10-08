@@ -15,6 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//Inyección de NivelAcademico
+builder.Services.AddScoped<RepositorioNivelAcademico>();
+builder.Services.AddScoped<NivelAcademicoNegocios>();
+builder.Services.AddScoped<INivelAcademicoServicios, NivelAcademicoServicios>();
+
 //Inyección de Docentes
 builder.Services.AddScoped<RepositorioDocente>();
 builder.Services.AddScoped<DocenteNegocios>();

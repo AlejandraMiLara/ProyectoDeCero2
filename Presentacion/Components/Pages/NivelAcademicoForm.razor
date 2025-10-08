@@ -1,0 +1,54 @@
+﻿@page "/nivelesacademicos/form"
+@page "/nivelesacademicos/form/{Id:int}"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios;
+@inject INivelAcademicoServicios NivelAcademicoServicios
+@inject NavigationManager NavigationManager
+
+<h3>Gestionar Nivel Académico</h3>
+
+
+<EditForm Model="@nivelAcademico" OnValidSubmit="GuardarNivelAcademico">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="nivAca">Nivel Académico</label>
+        <InputText id="nivAca" class="form-control" @bind-Value="nivelAcademico.NombreNivelAcademico" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+
+    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
+
+
+</EditForm>
+
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private E_NivelAcademico nivelAcademico = new E_NivelAcademico();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            nivelAcademico = await NivelAcademicoServicios.ObtenerNivelAcademicoPorIdAsync(Id);
+        }
+    }
+
+    private async Task GuardarNivelAcademico()
+    {
+        await NivelAcademicoServicios.GuardarNivelAcademicoAsync(nivelAcademico);
+        NavigationManager.NavigateTo("/nivelesacademicos");
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/nivelesacademicos");
+    }
+}

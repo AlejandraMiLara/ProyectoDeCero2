@@ -1,0 +1,98 @@
+﻿@page "/nivelesacademicos"
+@using Entidades
+@using ProyectoDeCero2.Servicios
+@using Servicios
+@inject INivelAcademicoServicios NivelAcademicoServicios
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@inject NavigationManager NavManager
+
+<h3 class="mt-4 mb-4 fw-bold">Gestión de Niveles Académicos</h3>
+
+<div class="d-flex align-items-center">
+
+    <button class="btn btn-success" @onclick="CrearNivelAcademico">
+        Crear Nuevo Nivel Académico
+    </button>
+
+    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
+        Ir a Inicio
+    </button>
+
+</div>
+
+@if (nivelesAcademico == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nivel Académico</th>
+                <th style="width: 250px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nivelAcademico in nivelesAcademico)
+            {
+                <tr>
+                    <td>@nivelAcademico.NombreNivelAcademico</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => EditarNivelAcademico(nivelAcademico.IdNivelAcademico)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarNivelAcademico(nivelAcademico.IdNivelAcademico)">X</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<E_NivelAcademico> nivelesAcademico;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerTodosLosNivelesAcademicosAsync();
+    }
+
+    private void CrearNivelAcademico()
+    {
+        NavigationManager.NavigateTo("/nivelesacademicos/form");
+    }
+
+    private void EditarNivelAcademico(int IdMateria)
+    {
+        NavigationManager.NavigateTo($"/nivelesacademicos/form/{IdMateria}");
+    }
+
+    private async Task ObtenerTodosLosNivelesAcademicosAsync()
+    {
+        try
+        {
+            nivelesAcademico = await NivelAcademicoServicios.ObtenerTodosLosNivelesAcademicosAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al obtener todos los niveles acadamicos: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarNivelAcademico(int IdNivelAcademico)
+    {
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿estás seguro de eliminar nivel?");
+
+        if (confirmacion)
+        {
+            await NivelAcademicoServicios.EliminarNivelAcademicoAsync(IdNivelAcademico);
+            await ObtenerTodosLosNivelesAcademicosAsync();
+        }
+    }
+
+    private void IrAHome()
+    {
+        NavManager.NavigateTo("/");
+    }
+}
