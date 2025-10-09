@@ -38,6 +38,12 @@ namespace ProyectoDeCero2.Datos
                 .HasMany(c => c.PlanesDeEstudio)
                 .WithMany(p => p.Carreras) 
                 .UsingEntity(j => j.ToTable("CarreraPlanEstudio"));
+
+            modelBuilder.Entity<E_Materia>()
+                .HasOne(m => m.NivelAcademico)
+                .WithMany(n => n.Materias)
+                .HasForeignKey(m => m.IdNivelAcademico)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -55,7 +55,14 @@ namespace ProyectoDeCero2.Datos
 
         public async Task<List<E_Materia>> ObtenerTodasLasMateriasAsync()
         {
-            return await _contexto.Materias 
+            return await _contexto.Materias
+                .Include(m => m.NivelAcademico)
+                .ToListAsync();
+        }
+
+        public async Task<List<E_NivelAcademico>> ObtenerTodosLosNivelesAcademicosAsync()
+        {
+            return await _contexto.NivelesAcademicos
                 .ToListAsync();
         }
     }

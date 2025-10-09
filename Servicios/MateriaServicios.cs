@@ -42,5 +42,10 @@ namespace Servicios
         {
             return await _materiaNegocios.ObtenerTodasLasMateriasAsync();
         }
+
+        public async Task<List<E_NivelAcademico>> ObtenerTodosLosNivelesAcademicosAsync()
+        {
+            return await _materiaNegocios.ObtenerTodosLosNivelesAcademicosAsync();
+        }
     }
 }

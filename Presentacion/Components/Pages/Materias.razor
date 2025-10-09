@@ -49,6 +49,7 @@ else
                 <th>HCL</th>
                 <th>HE</th>
                 <th>CR</th>
+                <th>Nivel Academico</th>
                 <th>Estado</th>
                 <th style="width: 250px;">Acciones</th>
             </tr>
@@ -66,6 +67,7 @@ else
                     <td>@materia.HCLMateria</td>
                     <td>@materia.HEMateria</td>
                     <td>@materia.CRMateria</td>
+                    <td>@materia.NivelAcademico?.NombreNivelAcademico</td>
                     <td>
                         <span class="badge @(materia.EstadoMateria ? "text-bg-success" : "text-bg-secondary")">
                             @(materia.EstadoMateria ? "Activa" : "Inactiva")

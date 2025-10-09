@@ -1,5 +1,4 @@
-﻿using Datos.Migrations;
-using Entidades;
+﻿using Entidades;
 using Negocios;
 using System;
 using System.Collections.Generic;

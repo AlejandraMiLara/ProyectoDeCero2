@@ -135,9 +135,6 @@ namespace Datos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("E_MateriaIdMateria")
-                        .HasColumnType("int");
-
                     b.Property<bool>("EstadoMateria")
                         .HasColumnType("bit");
 
@@ -163,6 +160,9 @@ namespace Datos.Migrations
                     b.Property<int>("HTMateria")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdNivelAcademico")
+                        .HasColumnType("int");
+
                     b.Property<string>("MetodologiaMateria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -181,7 +181,7 @@ namespace Datos.Migrations
 
                     b.HasKey("IdMateria");
 
-                    b.HasIndex("E_MateriaIdMateria");
+                    b.HasIndex("IdNivelAcademico");
 
                     b.ToTable("Materia", (string)null);
                 });
@@ -268,12 +268,15 @@ namespace Datos.Migrations
 
             modelBuilder.Entity("Entidades.E_Materia", b =>
                 {
-                    b.HasOne("Entidades.E_Materia", null)
+                    b.HasOne("Entidades.E_NivelAcademico", "NivelAcademico")
                         .WithMany("Materias")
-                        .HasForeignKey("E_MateriaIdMateria");
+                        .HasForeignKey("IdNivelAcademico")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("NivelAcademico");
                 });
 
-            modelBuilder.Entity("Entidades.E_Materia", b =>
+            modelBuilder.Entity("Entidades.E_NivelAcademico", b =>
                 {
                     b.Navigation("Materias");
                 });

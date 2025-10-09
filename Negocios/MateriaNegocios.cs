@@ -49,5 +49,10 @@ namespace Negocios
         {
             return await _repositorioMateria.ObtenerTodasLasMateriasAsync();
         }
+
+        public async Task<List<E_NivelAcademico>> ObtenerTodosLosNivelesAcademicosAsync()
+        {
+            return await _repositorioMateria.ObtenerTodosLosNivelesAcademicosAsync();
+        }
     }
 }

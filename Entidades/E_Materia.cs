@@ -30,6 +30,8 @@ namespace Entidades
         public string PathPUAMateria { get; set; } = string.Empty;
         public string PerfilDocente {  get; set; } = string .Empty;
 
-        public ICollection<E_Materia> Materias { get; set; } = new List<E_Materia>();
+        public int? IdNivelAcademico { get; set; }  // FK
+        public E_NivelAcademico NivelAcademico { get; set; }  // navegación
+
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Datos;
-using Datos.Migrations;
 using Entidades;
 using ProyectoDeCero2.Datos;
 using System;

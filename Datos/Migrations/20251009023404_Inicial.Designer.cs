@@ -12,8 +12,8 @@ using ProyectoDeCero2.Datos;
 namespace Datos.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20251008001229_MateriaDBActualizacion2")]
-    partial class MateriaDBActualizacion2
+    [Migration("20251009023404_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,42 @@ namespace Datos.Migrations
                     b.ToTable("Carrera", (string)null);
                 });
 
+            modelBuilder.Entity("Entidades.E_Docente", b =>
+                {
+                    b.Property<int>("IdDocente")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDocente"));
+
+                    b.Property<string>("ApMatDocente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApPatDocente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailDocente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EstadoDocente")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreDocente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroEmpleadoDocente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdDocente");
+
+                    b.ToTable("Docente", (string)null);
+                });
+
             modelBuilder.Entity("Entidades.E_Materia", b =>
                 {
                     b.Property<int>("IdMateria")
@@ -102,9 +138,6 @@ namespace Datos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("E_MateriaIdMateria")
-                        .HasColumnType("int");
-
                     b.Property<bool>("EstadoMateria")
                         .HasColumnType("bit");
 
@@ -130,6 +163,9 @@ namespace Datos.Migrations
                     b.Property<int>("HTMateria")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdNivelAcademico")
+                        .HasColumnType("int");
+
                     b.Property<string>("MetodologiaMateria")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -148,9 +184,26 @@ namespace Datos.Migrations
 
                     b.HasKey("IdMateria");
 
-                    b.HasIndex("E_MateriaIdMateria");
+                    b.HasIndex("IdNivelAcademico");
 
                     b.ToTable("Materia", (string)null);
+                });
+
+            modelBuilder.Entity("Entidades.E_NivelAcademico", b =>
+                {
+                    b.Property<int>("IdNivelAcademico")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNivelAcademico"));
+
+                    b.Property<string>("NombreNivelAcademico")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdNivelAcademico");
+
+                    b.ToTable("NivelAcademico", (string)null);
                 });
 
             modelBuilder.Entity("Entidades.E_PlanEstudio", b =>
@@ -218,12 +271,15 @@ namespace Datos.Migrations
 
             modelBuilder.Entity("Entidades.E_Materia", b =>
                 {
-                    b.HasOne("Entidades.E_Materia", null)
+                    b.HasOne("Entidades.E_NivelAcademico", "NivelAcademico")
                         .WithMany("Materias")
-                        .HasForeignKey("E_MateriaIdMateria");
+                        .HasForeignKey("IdNivelAcademico")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("NivelAcademico");
                 });
 
-            modelBuilder.Entity("Entidades.E_Materia", b =>
+            modelBuilder.Entity("Entidades.E_NivelAcademico", b =>
                 {
                     b.Navigation("Materias");
                 });

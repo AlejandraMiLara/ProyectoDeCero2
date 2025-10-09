@@ -1,5 +1,4 @@
-﻿using Datos.Migrations;
-using Entidades;
+﻿using Entidades;
 using ProyectoDeCero2.Datos;
 using System;
 using System.Collections.Generic;

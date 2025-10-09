@@ -97,6 +97,18 @@
         <InputTextArea id="perdoc" class="form-control" @bind-Value="materia.PerfilDocente" />
     </div>
 
+    <div class="form-group">
+        <label for="nivel">Nivel Académico</label>
+        <InputSelect id="nivel" class="form-control" @bind-Value="materia.IdNivelAcademico">
+            <option value="">-- Seleccione un nivel --</option>
+            @foreach (var nivel in nivelesAcademicos ?? new List<E_NivelAcademico>())
+            {
+                <option value="@nivel.IdNivelAcademico">@nivel.NombreNivelAcademico</option>
+            }
+        </InputSelect>
+    </div>
+
+
     <div class="form-group form-check">
         <InputCheckbox id="estado" class="form-check-input" @bind-Value="materia.EstadoMateria" />
         <label class="form-check-label" for="estado">Estado Activo</label>
@@ -116,6 +128,15 @@
     public int Id { get; set; }
 
     private E_Materia materia = new E_Materia();
+    private List<E_NivelAcademico> nivelesAcademicos;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        nivelesAcademicos = await MateriaServicios.ObtenerTodosLosNivelesAcademicosAsync()
+                              ?? new List<E_NivelAcademico>();
+    }
+
 
     protected override async Task OnParametersSetAsync()
     {

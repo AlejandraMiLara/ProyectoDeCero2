@@ -12,5 +12,7 @@ namespace Entidades
         [Key]
         public int IdNivelAcademico { get; set; }
         public string NombreNivelAcademico { get; set; } = string.Empty;
+
+        public ICollection<E_Materia> Materias { get; set; } = new List<E_Materia>();
     }
 }
