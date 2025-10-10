@@ -5,32 +5,210 @@
 @inject IPlanEstudioServicios PlanEstudioServicios
 @inject NavigationManager NavigationManager
 
-@if (carrera == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <h3 class="mb-4">Gestionar Planes para la Carrera: <strong>@carrera.NombreCarrera</strong></h3>
-
-    <div class="list-group">
-        @foreach (var plan in todosLosPlanes)
-        {
-            <label class="list-group-item">
-                <input class="form-check-input me-2" type="checkbox"
-                       checked="@(idsPlanesSeleccionados.Contains(plan.IdPlanEstudio))"
-                       @onchange="() => ToggleSeleccionPlan(plan.IdPlanEstudio)" />
-                @plan.PlanEstudio
-            </label>
-        }
+<div class="container-fluid px-4">
+    <!-- Header de la página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-1">Gestión de Planes de Estudio</h3>
+            <p class="text-muted mb-0">Asigna planes de estudio a la carrera: <strong>@carrera?.NombreCarrera</strong></p>
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="Cancelar">
+            <i class="fas fa-arrow-left me-2"></i>Volver
+        </button>
     </div>
 
-    <div class="mt-4">
-        <button class="btn btn-primary" @onclick="GuardarCambios">Guardar Cambios</button>
-        <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-    </div>
-}
+    @if (carrera == null)
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando información de la carrera...</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Información de la Carrera -->
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="fas fa-graduation-cap me-2"></i>
+                            Información de la Carrera
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted mb-1">Clave</label>
+                            <p class="mb-0 fw-bold text-primary">@carrera.ClaveCarrera</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted mb-1">Nombre</label>
+                            <p class="mb-0">@carrera.NombreCarrera</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted mb-1">Alias</label>
+                            <p class="mb-0">@carrera.AliasCarrera</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold text-muted mb-1">Estado</label>
+                            <div>
+                                <span class="badge @(carrera.EstadoCarrera ? "bg-success" : "bg-secondary") rounded-pill">
+                                    @(carrera.EstadoCarrera ? "Activa" : "Inactiva")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Lista de Planes de Estudio -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clipboard-list text-primary me-2"></i>
+                                Planes de Estudio Disponibles
+                            </h5>
+                            <span class="badge bg-primary rounded-pill">
+                                @idsPlanesSeleccionados.Count seleccionados
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @if (todosLosPlanes == null || !todosLosPlanes.Any())
+                        {
+                            <div class="text-center py-4">
+                                <i class="fas fa-clipboard-question fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No hay planes de estudio disponibles</h5>
+                                <p class="text-muted mb-3">Primero debes crear planes de estudio en el sistema.</p>
+                                <a href="/planes/form" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i>Crear Plan de Estudio
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row g-3">
+                                @foreach (var plan in todosLosPlanes)
+                                {
+                                    var estaSeleccionado = idsPlanesSeleccionados.Contains(plan.IdPlanEstudio);
+
+                                    <div class="col-md-6">
+                                        <div class="card plan-card @(estaSeleccionado ? "border-primary selected" : "") h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="form-check me-3 mt-1">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               checked="@estaSeleccionado"
+                                                               @onchange="() => ToggleSeleccionPlan(plan.IdPlanEstudio)" />
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="card-title fw-semibold mb-2">
+                                                            @plan.PlanEstudio
+                                                        </h6>
+                                                        <div class="plan-details">
+                                                            <div class="d-flex justify-content-between text-muted small mb-2">
+                                                                <span>
+                                                                    <i class="fas fa-calculator me-1"></i>
+                                                                    @plan.TotalCreditos créditos
+                                                                </span>
+                                                                <span>
+                                                                    <i class="fas fa-calendar me-1"></i>
+                                                                    @plan.FechaCreacion.ToShortDateString()
+                                                                </span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span class="badge @(plan.EstadoPlanEstudio ? "bg-success" : "bg-secondary") rounded-pill">
+                                                                    @(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")
+                                                                </span>
+                                                                @if (!string.IsNullOrEmpty(plan.Comentarios))
+                                                                {
+                                                                    <small class="text-muted" title="@plan.Comentarios">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </small>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="card shadow-sm border-0 mt-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Resumen de selección</h6>
+                                <p class="text-muted mb-0 small">
+                                    @idsPlanesSeleccionados.Count de @todosLosPlanes?.Count planes seleccionados
+                                </p>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-secondary" @onclick="Cancelar">
+                                    <i class="fas fa-times me-2"></i>Cancelar
+                                </button>
+                                <button class="btn btn-primary" @onclick="GuardarCambios" disabled="@(todosLosPlanes == null || !todosLosPlanes.Any())">
+                                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .plan-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+
+    .plan-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-color: #e9ecef;
+    }
+
+    .plan-card.selected {
+        border-color: #0d6efd;
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+    .plan-card .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        margin-top: 0.2em;
+    }
+
+    .plan-card .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .plan-details {
+        font-size: 0.875rem;
+    }
+
+    .card-header {
+        border-bottom: 1px solid rgba(0,0,0,0.125);
+    }
+</style>
 
 @code {
     [Parameter]
@@ -42,11 +220,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        carrera = await CarreraServicios.ObtenerCarreraPorIdAsync(IdCarrera);
+        await CargarDatos();
+    }
 
+    private async Task CargarDatos()
+    {
+        carrera = await CarreraServicios.ObtenerCarreraPorIdAsync(IdCarrera);
         todosLosPlanes = await PlanEstudioServicios.ObtenerTodosLosPlanesAsync();
 
-        if (carrera != null)
+        if (carrera != null && carrera.PlanesDeEstudio != null)
         {
             idsPlanesSeleccionados = new HashSet<int>(carrera.PlanesDeEstudio.Select(p => p.IdPlanEstudio));
         }
@@ -62,12 +244,22 @@ else
         {
             idsPlanesSeleccionados.Add(idPlan);
         }
+
+        StateHasChanged(); // Forzar actualización visual
     }
 
     private async Task GuardarCambios()
     {
-        await CarreraServicios.ActualizarPlanesDeCarreraAsync(IdCarrera, idsPlanesSeleccionados.ToList());
-        NavigationManager.NavigateTo("/carreras");
+        try
+        {
+            await CarreraServicios.ActualizarPlanesDeCarreraAsync(IdCarrera, idsPlanesSeleccionados.ToList());
+            NavigationManager.NavigateTo("/carreras");
+        }
+        catch (Exception ex)
+        {
+            // Aquí podrías mostrar un mensaje de error
+            Console.WriteLine($"Error al guardar cambios: {ex.Message}");
+        }
     }
 
     private void Cancelar()
