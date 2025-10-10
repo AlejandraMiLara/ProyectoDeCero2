@@ -2,21 +2,213 @@
 
 <PageTitle>Inicio - UABC</PageTitle>
 
-<div class="container-fluid p-0">
-    <div class="p-5 text-center bg-image" style="
+<div class="container-fluid p-0 mt-lg-5">
+
+    <div class="hero-section position-relative overflow-hidden">
+        <div class="hero-background" style="
             background-image: url('https://consulten.org.mx/fotos/134.jpg');
-            height: 500px;
             background-position: center;
             background-size: cover;
-            position: relative;">
+            background-attachment: fixed;">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content position-relative text-white text-center py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <h1 class="hero-title display-2 fw-bold mb-4 animate-fade-in">
+                            Gestión Académica <span class="text-warning">UABC</span>
+                        </h1>
+                        <p class="hero-subtitle lead mb-4 fs-4 animate-slide-up">
+                            Plataforma integral para la administración educativa universitaria
+                        </p>
+                        <div class="hero-buttons animate-slide-up-delayed">
+                            <a class="btn btn-warning btn-lg me-3 px-4 py-3 fw-semibold" href="/carreras" role="button">
+                                <i class="fas fa-rocket me-2"></i>Comenzar Ahora
+                            </a>
+                            <a class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold" href="#features" role="button">
+                                <i class="fas fa-info-circle me-2"></i>Más Información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
 
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6); position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="text-white">
-                    <h1 class="mb-3 display-3 fw-bold">Gestión Académica UABC</h1>
-                    <h4 class="mb-3">Simplificando la administración educativa</h4>
-                    <a data-mdb-ripple-init class="btn btn-outline-light btn-lg" href="/carreras" role="button">
-                        Explorar Carreras <i class="fas fa-arrow-right ms-2"></i>
+    <!-- Features Section -->
+    <div id="features" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold text-primary mb-3">Módulos del Sistema</h2>
+                <p class="lead text-muted">Gestiona todos los aspectos académicos desde una sola plataforma</p>
+                <div class="divider mx-auto"></div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Carreras -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h4 class="fw-bold text-primary mb-3">Carreras</h4>
+                            <p class="text-muted mb-4">
+                                Administra la oferta académica completa, desde licenciaturas hasta posgrados
+                            </p>
+                            <a href="/carreras" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>Gestionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Planes de Estudio -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <h4 class="fw-bold text-success mb-3">Planes de Estudio</h4>
+                            <p class="text-muted mb-4">
+                                Diseña y administra la estructura curricular de cada programa educativo
+                            </p>
+                            <a href="/planes" class="btn btn-success btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>Gestionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Materias -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h4 class="fw-bold text-danger mb-3">Materias</h4>
+                            <p class="text-muted mb-4">
+                                Gestiona el catálogo completo de asignaturas y sus contenidos programáticos
+                            </p>
+                            <a href="/materias" class="btn btn-danger btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>Gestionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docentes -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-3">Docentes</h4>
+                            <p class="text-muted mb-4">
+                                Administra la planta docente, perfiles académicos y asignaciones
+                            </p>
+                            <a href="/docentes" class="btn btn-dark btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>Gestionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Niveles Académicos -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <h4 class="fw-bold text-info mb-3">Niveles Académicos</h4>
+                            <p class="text-muted mb-4">
+                                Configura los niveles educativos y su jerarquía en el sistema
+                            </p>
+                            <a href="/nivelesacademicos" class="btn btn-info btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>Gestionar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard -->
+                <div class="col-xl-4 col-md-6">
+                    <div class="feature-card card h-100 border-0 shadow-hover">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mb-4">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4 class="fw-bold text-warning mb-3">Inactivo</h4>
+                            <p class="text-muted mb-4">
+                                Un texto breve para rellenar y que no se vea feo todo vacío, y así.
+                            </p>
+                            <a href="/carreras" class="btn btn-warning btn-lg w-100">
+                                <i class="fas fa-arrow-right me-2"></i>No Activo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section 
+    <div class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <i class="fas fa-university fa-3x mb-3 text-warning"></i>
+                        <h3 class="display-4 fw-bold mb-2">50+</h3>
+                        <p class="mb-0 opacity-75">Carreras Activas</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <i class="fas fa-users fa-3x mb-3 text-warning"></i>
+                        <h3 class="display-4 fw-bold mb-2">1,200+</h3>
+                        <p class="mb-0 opacity-75">Docentes</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <i class="fas fa-book-open fa-3x mb-3 text-warning"></i>
+                        <h3 class="display-4 fw-bold mb-2">800+</h3>
+                        <p class="mb-0 opacity-75">Materias</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <i class="fas fa-graduation-cap fa-3x mb-3 text-warning"></i>
+                        <h3 class="display-4 fw-bold mb-2">25K+</h3>
+                        <p class="mb-0 opacity-75">Estudiantes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <!-- CTA Section -->
+    <div class="py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="display-6 fw-bold mb-3">¿Listo para optimizar tu gestión académica?</h2>
+                    <p class="lead mb-0 opacity-75">
+                        Únete a las instituciones que ya están transformando su administración educativa con nuestra plataforma.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="btn btn-warning btn-lg px-5 py-3 fw-bold" href="/carreras" role="button">
+                        <i class="fas fa-play me-2"></i>Iniciar Ahora
                     </a>
                 </div>
             </div>
@@ -24,103 +216,150 @@
     </div>
 </div>
 
-<div class="container mt-5">
+<style>
+    /* Hero Section Styles */
+    .hero-section {
+        height: 100vh;
+        min-height: 600px;
+    }
 
-    <div class="row text-center mb-5">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
-                    <h5 class="card-title fw-bold">Administración de Carreras</h5>
-                    <p class="card-text text-muted">
-                        Agrega, edita o elimina la oferta académica. Mantén el catálogo universitario siempre actualizado.
-                    </p>
-                    <a href="/carreras" class="btn btn-outline-primary btn-lg">Gestionar Carreras</a>
-                </div>
-            </div>
-        </div>
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-file-alt fa-4x text-success mb-3"></i>
-                    <h5 class="card-title fw-bold">Gestión de Planes de Estudio</h5>
-                    <p class="card-text text-muted">
-                        Define la estructura curricular y los planes de estudio asociados a cada carrera, haz click para entrar.
-                    </p>
-                    <a href="/planes" class="btn btn-outline-success btn-lg">Gestionar Planes</a>
-                </div>
-            </div>
-        </div>
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.8) 0%, rgba(111, 66, 193, 0.8) 100%);
+    }
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-search fa-4x text-danger mb-3"></i>
-                    <h5 class="card-title fw-bold">Consulta y Búsqueda</h5>
-                    <p class="card-text text-muted">
-                        Encuentra rápidamente la información que necesitas con nuestra herramienta de búsqueda integrada.
-                    </p>
-                    <a href="/carreras" class="btn btn-outline-danger btn-lg">Buscar Carreras</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    .hero-content {
+        padding-top: 15vh;
+    }
 
-    <div class="container mt-5">
+    .hero-title {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
 
-        <div class="row text-center mb-5">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
-                        <h5 class="card-title fw-bold">Administración de Materias</h5>
-                        <p class="card-text text-muted">
-                            Agrega, edita o elimina la oferta de materias. Mantén el catálogo universitario siempre actualizado.
-                        </p>
-                        <a href="/materias" class="btn btn-outline-warning btn-lg">Gestionar Materias</a>
-                    </div>
-                </div>
-            </div>
+    .hero-scroll-indicator {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 1.5rem;
+        animation: bounce 2s infinite;
+    }
 
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
-                        <h5 class="card-title fw-bold">Administración de Docentes</h5>
-                        <p class="card-text text-muted">
-                            Agrega, edita o elimina la oferta de docentes. Mantén el catálogo universitario siempre actualizado.
-                        </p>
-                        <a href="/docentes" class="btn btn-outline-dark btn-lg">Gestionar Docentes</a>
-                    </div>
-                </div>
-            </div>
+    /* Feature Cards */
+    .feature-card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+    }
 
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-graduation-cap fa-4x text-primary mb-3"></i>
-                        <h5 class="card-title fw-bold">Administración de Nivel Académico</h5>
-                        <p class="card-text text-muted">
-                            Agrega, edita o elimina la oferta de niveles académicos. Mantén el catálogo universitario siempre actualizado.
-                        </p>
-                        <a href="/nivelesacademicos" class="btn btn-outline-info btn-lg">Gestionar Niveles</a>
-                    </div>
-                </div>
-            </div>
-         </div>
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+        }
 
-     </div>
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, currentColor 0%, transparent 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.1;
+    }
 
-    <div class="p-5 mb-5 bg-dark text-white text-center rounded-3 shadow-lg">
-        <h2 class="display-6 fw-bold">Inicia tu gestión académica ahora</h2>
-        <p class="lead mt-3">
-            El sistema está listo para ayudarte a organizar y administrar la información de la oferta educativa de manera eficiente.
-        </p>
-        <hr class="my-4 border-light opacity-50" />
-        <a class="btn btn-primary btn-lg mt-3" href="/carreras" role="button">
-            Comenzar <i class="fas fa-play ms-2"></i>
-        </a>
-    </div>
+        .feature-icon i {
+            font-size: 2.5rem;
+            opacity: 1;
+        }
 
-</div>
+    /* Stats */
+    .stat-item {
+        padding: 2rem 1rem;
+    }
+
+    /* Divider */
+    .divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #0d6efd, #6f42c1);
+        border-radius: 2px;
+    }
+
+    /* Animations */
+    @@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0) translateX(-50%);
+        }
+
+        40% {
+            transform: translateY(-10px) translateX(-50%);
+        }
+
+        60% {
+            transform: translateY(-5px) translateX(-50%);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 1s ease-out;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 1s ease-out 0.3s both;
+    }
+
+    .animate-slide-up-delayed {
+        animation: slideUp 1s ease-out 0.6s both;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-content {
+            padding-top: 10vh;
+        }
+
+        .display-4 {
+            font-size: 2.5rem;
+        }
+    }
+</style>

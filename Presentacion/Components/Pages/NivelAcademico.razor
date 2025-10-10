@@ -7,48 +7,159 @@
 @inject NavigationManager NavigationManager
 @inject NavigationManager NavManager
 
-<h3 class="mt-4 mb-4 fw-bold">Gestión de Niveles Académicos</h3>
+<div class="container-fluid px-4">
+    <!-- Header de la página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-1">Gestión de Niveles Académicos</h3>
+            <p class="text-muted mb-0">Administra los niveles académicos del sistema</p>
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="IrAHome">
+            <i class="fas fa-home me-2"></i>Ir a Inicio
+        </button>
+    </div>
 
-<div class="d-flex align-items-center">
+    <!-- Barra de herramientas -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        <small class="text-muted">
+                            Total de niveles: <strong>@(nivelesAcademico?.Count ?? 0)</strong>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-success" @onclick="CrearNivelAcademico">
+                            <i class="fas fa-layer-group me-2"></i>Nuevo Nivel Académico
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <button class="btn btn-success" @onclick="CrearNivelAcademico">
-        Crear Nuevo Nivel Académico
-    </button>
+    <!-- Tabla de niveles académicos -->
+    @if (nivelesAcademico == null)
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando niveles académicos...</p>
+            </div>
+        </div>
+    }
+    else if (!nivelesAcademico.Any())
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-layer-group fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No hay niveles académicos</h5>
+                <p class="text-muted mb-4">Comienza creando el primer nivel académico.</p>
+                <button class="btn btn-primary" @onclick="CrearNivelAcademico">
+                    <i class="fas fa-layer-group me-2"></i>Crear primer nivel
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Nivel Académico</th>
+                                <th class="text-center">Orden</th>
+                                <th class="text-center" style="width: 150px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var nivelAcademico in nivelesAcademico)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="level-icon me-3">
+                                                <i class="fas @GetLevelIcon(nivelAcademico.NombreNivelAcademico) text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold">@nivelAcademico.NombreNivelAcademico</div>
+                                                <small class="text-muted">ID: @nivelAcademico.IdNivelAcademico</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-secondary rounded-pill">
+                                            @(nivelesAcademico.IndexOf(nivelAcademico) + 1)
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-outline-primary"
+                                                    @onclick="() => EditarNivelAcademico(nivelAcademico.IdNivelAcademico)"
+                                                    title="Editar nivel académico">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger"
+                                                    @onclick="() => EliminarNivelAcademico(nivelAcademico.IdNivelAcademico)"
+                                                    title="Eliminar nivel académico">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
-        Ir a Inicio
-    </button>
-
+        <!-- Información adicional -->
+        <div class="row mt-4">
+            <div class="col-md-9">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary mb-3">
+                            <i class="fas fa-lightbulb me-2"></i>Información
+                        </h6>
+                        <p class="small text-muted mb-0">
+                            Los niveles académicos definen la jerarquía educativa del sistema.
+                            Ejemplos comunes: Licenciatura, Maestría, Doctorado, etc.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4 class="mb-0">@nivelesAcademico.Count</h4>
+                        <small>Total Niveles</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
-@if (nivelesAcademico == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Nivel Académico</th>
-                <th style="width: 250px;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var nivelAcademico in nivelesAcademico)
-            {
-                <tr>
-                    <td>@nivelAcademico.NombreNivelAcademico</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" @onclick="() => EditarNivelAcademico(nivelAcademico.IdNivelAcademico)">Editar</button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarNivelAcademico(nivelAcademico.IdNivelAcademico)">X</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
+<style>
+    .level-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(13, 110, 253, 0.1);
+        border-radius: 8px;
+    }
+</style>
 
 @code {
     private List<E_NivelAcademico> nivelesAcademico;
@@ -63,9 +174,9 @@ else
         NavigationManager.NavigateTo("/nivelesacademicos/form");
     }
 
-    private void EditarNivelAcademico(int IdMateria)
+    private void EditarNivelAcademico(int IdNivelAcademico)
     {
-        NavigationManager.NavigateTo($"/nivelesacademicos/form/{IdMateria}");
+        NavigationManager.NavigateTo($"/nivelesacademicos/form/{IdNivelAcademico}");
     }
 
     private async Task ObtenerTodosLosNivelesAcademicosAsync()
@@ -76,14 +187,13 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al obtener todos los niveles acadamicos: {ex.Message}");
+            Console.WriteLine($"Error al obtener todos los niveles académicos: {ex.Message}");
         }
     }
 
     private async Task EliminarNivelAcademico(int IdNivelAcademico)
     {
-        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿estás seguro de eliminar nivel?");
-
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿Estás seguro de eliminar este nivel académico?");
         if (confirmacion)
         {
             await NivelAcademicoServicios.EliminarNivelAcademicoAsync(IdNivelAcademico);
@@ -94,5 +204,28 @@ else
     private void IrAHome()
     {
         NavManager.NavigateTo("/");
+    }
+
+    private string GetLevelIcon(string nivelNombre)
+    {
+        if (string.IsNullOrEmpty(nivelNombre)) return "fa-layer-group";
+
+        var lowerName = nivelNombre.ToLower();
+        return lowerName switch
+        {
+            var n when n.Contains("licenciatura") || n.Contains("pregrado") => "fa-user-graduate",
+            var n when n.Contains("maestría") || n.Contains("maestria") || n.Contains("master") => "fa-user-tie",
+            var n when n.Contains("doctorado") || n.Contains("phd") => "fa-user-graduate",
+            var n when n.Contains("diplomado") || n.Contains("certificado") => "fa-certificate",
+            var n when n.Contains("técnico") || n.Contains("tecnico") => "fa-tools",
+            _ => "fa-layer-group"
+        };
+    }
+
+    private int GetCommonLevelsCount()
+    {
+        var commonLevels = new[] { "licenciatura", "maestría", "maestria", "doctorado", "técnico", "tecnico", "diplomado" };
+        return nivelesAcademico?.Count(n =>
+            commonLevels.Any(cl => n.NombreNivelAcademico.ToLower().Contains(cl))) ?? 0;
     }
 }

@@ -7,87 +7,220 @@
 @inject NavigationManager NavigationManager
 @inject NavigationManager NavManager
 
-<h3 class="mt-4 mb-4 fw-bold">Gestión de Materias</h3>
+<div class="container-fluid px-4">
+    <!-- Header de la página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-1">Gestión de Materias</h3>
+            <p class="text-muted mb-0">Administra el catálogo de materias del sistema</p>
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="IrAHome">
+            <i class="fas fa-home me-2"></i>Ir a Inicio
+        </button>
+    </div>
 
-<div class="d-flex align-items-center">
-    <input type="text"
-           class="form-control me-2"
-           style="max-width: 300px;"
-           placeholder="Buscar por CLAVE"
-           @bind="busqueda"
-           @bind:event="oninput" />
-
-    <button class="btn btn-primary me-2" @onclick="BuscarMaterias">
-        Buscar
-    </button>
-
-    <button class="btn btn-success" @onclick="CrearMateria">
-        Crear Nueva Materia
-    </button>
-
-    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
-        Ir a Inicio
-    </button>
-
-</div>
-
-@if (materias == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Clave</th>
-                <th>Materia</th>
-                <th>HC</th>
-                <th>HL</th>
-                <th>HT</th>
-                <th>HPC</th>
-                <th>HCL</th>
-                <th>HE</th>
-                <th>CR</th>
-                <th>Nivel Academico</th>
-                <th>Estado</th>
-                <th style="width: 250px;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var materia in materias)
-            {
-                <tr>
-                    <td>@materia.ClaveMateria</td>
-                    <td>@materia.PropositoMateria</td>
-                    <td>@materia.HCMateria</td>
-                    <td>@materia.HLMateria</td>
-                    <td>@materia.HTMateria</td>
-                    <td>@materia.HPCMateria</td>
-                    <td>@materia.HCLMateria</td>
-                    <td>@materia.HEMateria</td>
-                    <td>@materia.CRMateria</td>
-                    <td>@materia.NivelAcademico?.NombreNivelAcademico</td>
-                    <td>
-                        <span class="badge @(materia.EstadoMateria ? "text-bg-success" : "text-bg-secondary")">
-                            @(materia.EstadoMateria ? "Activa" : "Inactiva")
+    <!-- Barra de herramientas -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-search text-muted"></i>
                         </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-info btn-sm" @onclick="() => VerMateria(materia.IdMateria)">Ver</button>
-                        <button class="btn btn-primary btn-sm" @onclick="() => EditarMateria(materia.IdMateria)">Editar</button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarMateria(materia.IdMateria)">X</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                        <input type="text"
+                               class="form-control border-start-0"
+                               placeholder="Buscar por clave de materia..."
+                               @bind="busqueda"
+                               @bind:event="oninput" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-outline-primary" @onclick="BuscarMaterias">
+                            <i class="fas fa-search me-2"></i>Buscar
+                        </button>
+                        <button class="btn btn-success" @onclick="CrearMateria">
+                            <i class="fas fa-plus-circle me-2"></i>Nueva Materia
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Tabla de materias -->
+    @if (materias == null)
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando materias...</p>
+            </div>
+        </div>
+    }
+    else if (!materias.Any())
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-book fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No se encontraron materias</h5>
+                <p class="text-muted mb-4">No hay materias que coincidan con tu búsqueda.</p>
+                <button class="btn btn-primary" @onclick="CrearMateria">
+                    <i class="fas fa-plus-circle me-2"></i>Crear primera materia
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Clave</th>
+                                <th>Materia</th>
+                                <th class="text-center">Horas</th>
+                                <th class="text-center">Créditos</th>
+                                <th class="text-center">Nivel Académico</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center" style="width: 200px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var materia in materias)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <span class="fw-bold text-primary font-monospace">@materia.ClaveMateria</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-book text-muted me-2"></i>
+                                            <div>
+                                                <div class="fw-semibold">@materia.PropositoMateria</div>
+                                                @if (!string.IsNullOrEmpty(materia.CompetenciaMateria))
+                                                {
+                                                    <small class="text-muted">@materia.CompetenciaMateria</small>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="d-flex flex-wrap justify-content-center gap-1" style="max-width: 120px;">
+                                            <span class="badge bg-light text-dark border" title="Horas Clase">HC: @materia.HCMateria</span>
+                                            <span class="badge bg-light text-dark border" title="Horas Laboratorio">HL: @materia.HLMateria</span>
+                                            <span class="badge bg-light text-dark border" title="Horas Taller">HT: @materia.HTMateria</span>
+                                            <span class="badge bg-light text-dark border" title="Horas Práctica Clase">HPC: @materia.HPCMateria</span>
+                                            <span class="badge bg-light text-dark border" title="Horas Clase Laboratorio">HCL: @materia.HCLMateria</span>
+                                            <span class="badge bg-light text-dark border" title="Horas Estudio">HE: @materia.HEMateria</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary rounded-pill fs-6">
+                                            @materia.CRMateria
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        @if (materia.NivelAcademico != null)
+                                        {
+                                            <span class="badge bg-info text-dark">
+                                                @materia.NivelAcademico.NombreNivelAcademico
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge @(materia.EstadoMateria ? "bg-success" : "bg-secondary") rounded-pill">
+                                            <i class="fas @(materia.EstadoMateria ? "fa-check" : "fa-pause") me-1"></i>
+                                            @(materia.EstadoMateria ? "Activa" : "Inactiva")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-outline-info"
+                                                    @onclick="() => VerMateria(materia.IdMateria)"
+                                                    title="Ver detalles">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-outline-primary"
+                                                    @onclick="() => EditarMateria(materia.IdMateria)"
+                                                    title="Editar materia">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger"
+                                                    @onclick="() => EliminarMateria(materia.IdMateria)"
+                                                    title="Eliminar materia">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
+        <!-- Resumen estadístico -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@materias.Count</h4>
+                                <small>Total Materias</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-book fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@materias.Count(m => m.EstadoMateria)</h4>
+                                <small>Materias Activas</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-secondary text-gray">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@materias.Count(m => !m.EstadoMateria)</h4>
+                                <small>Materias Inactivas</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-pause-circle fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-
-
+        </div>
+    }
+</div>
 
 @code {
     private string busqueda = string.Empty;
@@ -124,7 +257,7 @@ else
         {
             materias = await MateriaServicios.ObtenerTodasLasMateriasAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine($"Error al obtener todos las materias: {ex.Message}");
         }
@@ -132,8 +265,7 @@ else
 
     private async Task EliminarMateria(int idMateria)
     {
-        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿estás seguro de eliminar materia?");
-
+        var confirmacion = await JSRuntime.InvokeAsync<bool>("confirm", "¿Estás seguro de eliminar esta materia?");
         if (confirmacion)
         {
             await MateriaServicios.EliminarMateriaAsync(idMateria);

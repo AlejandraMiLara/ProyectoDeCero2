@@ -3,12 +3,234 @@
 <div class="page">
 
     <main>
-        <div class="top-row px-4">
-            <br />
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+            <div class="container">
+                <!-- Logo y Marca -->
+                <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+                    <div class="logo-icon me-2">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span>UABC Gestión</span>
+                </a>
 
-        <article class="content px-4">
+                <!-- Botón Hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Contenido de la Navegación -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home me-1"></i>Inicio
+                            </a>
+                        </li>
+
+                        <!--
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-university me-1"></i>Académico
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/carreras"><i class="fas fa-graduation-cap me-2"></i>Carreras</a></li>
+                                <li><a class="dropdown-item" href="/planes"><i class="fas fa-clipboard-list me-2"></i>Planes de Estudio</a></li>
+                                <li><a class="dropdown-item" href="/materias"><i class="fas fa-book me-2"></i>Materias</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/nivelesacademicos"><i class="fas fa-layer-group me-2"></i>Niveles Académicos</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/docentes">
+                                <i class="fas fa-chalkboard-teacher me-1"></i>Docentes
+                            </a>
+                        </li>
+                        -->
+
+                    </ul>
+
+                    <!-- Información del Usuario -->
+                    <!--<div class="navbar-nav">
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="user-avatar me-2">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span>Administrador</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Perfil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </nav>
+
+        <article class="content mt-2">
             @Body
         </article>
     </main>
 </div>
+
+<style>
+    /* Barra de Navegación Personalizada */
+    .custom-navbar {
+        background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+        box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        padding: 0.8rem 0;
+        transition: all 0.3s ease;
+    }
+
+        .custom-navbar.scrolled {
+            background: linear-gradient(135deg, #0b5ed7 0%, #5a3aa3 100%);
+            backdrop-filter: blur(10px);
+        }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo-icon {
+        background: rgba(255, 255, 255, 0.2);
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem !important;
+        margin: 0 0.2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white !important;
+        }
+
+    .dropdown-menu {
+        background: white;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        margin-top: 0.5rem;
+    }
+
+    .dropdown-item {
+        padding: 0.75rem 1.5rem;
+        color: #333;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        margin: 0.1rem 0.5rem;
+        width: auto;
+    }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    .navbar-toggler {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.25rem 0.5rem;
+    }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+        }
+
+    /* Contenido Principal */
+    .main-content {
+        padding-top: 80px;
+        min-height: calc(100vh - 80px);
+    }
+
+    /* Responsive */
+    @@media (max-width: 991.98px) {
+        .navbar-collapse {
+            background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .nav-link {
+            margin: 0.2rem 0;
+        }
+
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 0.5rem 0;
+        }
+    }
+
+    /* Animaciones */
+    .nav-link, .dropdown-item, .navbar-brand {
+        transition: all 0.3s ease;
+    }
+</style>
+
+<script>
+    // Efecto de scroll en la navbar
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.custom-navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Activar elemento activo en la navegación
+    function setActiveNavLink() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Ejecutar cuando se carga la página
+    document.addEventListener('DOMContentLoaded', setActiveNavLink);
+</script>

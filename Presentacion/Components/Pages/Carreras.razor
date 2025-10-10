@@ -7,127 +7,201 @@
 @inject NavigationManager NavigationManager
 @inject NavigationManager NavManager
 
-<h3 class="mt-4 mb-4 fw-bold">Gestión de Carreras</h3>
+<div class="container-fluid px-4">
+    <!-- Header de la página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-1">Gestión de Carreras</h3>
+            <p class="text-muted mb-0">Administra las carreras y sus planes de estudio</p>
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="IrAHome">
+            <i class="fas fa-home me-2"></i>Ir a Inicio
+        </button>
+    </div>
 
-<div class="d-flex align-items-center">
-    <input type="text"
-           class="form-control me-2"
-           style="max-width: 300px;"
-           placeholder="Buscar por nombre o clave"
-           @bind="busqueda"
-           @bind:event="oninput" />
-
-    <button class="btn btn-primary me-2" @onclick="BuscarCarreras">
-        Buscar
-    </button>
-
-    <button class="btn btn-success" @onclick="CrearCarrera">
-        Crear Nueva Carrera
-    </button>
-
-    <button class="btn btn-secondary ms-2" @onclick="IrAHome">
-        Ir a Inicio
-    </button>
-
-</div>
-
-
-
-
-@if (carreras == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Clave</th>
-                <th>Nombre de Carrera</th>
-                <th>Alias</th>
-                <th>Estado</th>
-                <th style="width: 250px;">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var carrera in carreras)
-            {
-                <tr>
-                    <td>@carrera.ClaveCarrera</td>
-                    <td>@carrera.NombreCarrera</td>
-                    <td>@carrera.AliasCarrera</td>
-                    <td>
-                        <span class="badge @(carrera.EstadoCarrera ? "text-bg-success" : "text-bg-secondary")">
-                            @(carrera.EstadoCarrera ? "Activa" : "Inactiva")
+    <!-- Barra de herramientas -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-search text-muted"></i>
                         </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-info btn-sm me-1" @onclick="() => ToggleRow(carrera.IdCarrera)">
-                            <i class="fas fa-chevron-down"></i> @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar" : "Planes")
+                        <input type="text"
+                               class="form-control border-start-0"
+                               placeholder="Buscar por nombre o clave de carrera..."
+                               @bind="busqueda"
+                               @bind:event="oninput" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-outline-primary" @onclick="BuscarCarreras">
+                            <i class="fas fa-search me-2"></i>Buscar
                         </button>
-                        <button class="btn btn-primary btn-sm me-1" @onclick="() => EditarCarrera(carrera.IdCarrera)">
-                            <i class="fas fa-edit"></i> Editar
+                        <button class="btn btn-success" @onclick="CrearCarrera">
+                            <i class="fas fa-plus-circle me-2"></i>Nueva Carrera
                         </button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarCarrera(carrera.IdCarrera)">
-                            <i class="fas fa-trash-alt"></i> X
-                        </button>
-                    </td>
-                </tr>
-                
-                @if (filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera])
-                {
-                    <tr>
-                        <td colspan="5">
-                            <div class="p-3 bg-light border rounded">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="mb-0">Planes de Estudio Asignados</h5>
-                                    
-                                    <button class="btn btn-info btn-sm" @onclick="() => GestionarPlanes(carrera.IdCarrera)">
-                                        <i class="fas fa-tasks"></i> Administrar Planes
-                                    </button>
-                                </div>
-                                
-                                @if (carrera.PlanesDeEstudio != null && carrera.PlanesDeEstudio.Any())
-                                {
-                                    <table class="table table-bordered table-sm mb-0">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th>Nombre del Plan</th>
-                                                <th>Créditos Totales</th>
-                                                <th>Estado</th>
-                                                <th>Acciones del Plan</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var plan in carrera.PlanesDeEstudio)
-                                            {
-                                                <tr>
-                                                    <td>@plan.PlanEstudio</td>
-                                                    <td>@plan.TotalCreditos</td>
-                                                    <td>@(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")</td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm" @onclick="() => EditarPlanDeEstudio(plan.IdPlanEstudio)">Editar</button>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                }
-                                else
-                                {
-                                    <p class="text-center text-muted mb-0">No hay planes de estudio asignados a esta carrera.</p>
-                                }
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Tabla de carreras -->
+    @if (carreras == null)
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando carreras...</p>
+            </div>
+        </div>
+    }
+    else if (!carreras.Any())
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No se encontraron carreras</h5>
+                <p class="text-muted mb-4">No hay carreras que coincidan con tu búsqueda.</p>
+                <button class="btn btn-primary" @onclick="CrearCarrera">
+                    <i class="fas fa-plus-circle me-2"></i>Crear primera carrera
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Clave</th>
+                                <th>Nombre de Carrera</th>
+                                <th>Alias</th>
+                                <th>Estado</th>
+                                <th class="text-center" style="width: 280px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var carrera in carreras)
+                            {
+                                <tr class="@(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "table-active" : "")">
+                                    <td class="ps-4 fw-semibold text-primary">@carrera.ClaveCarrera</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-graduation-cap text-muted me-2"></i>
+                                            @carrera.NombreCarrera
+                                        </div>
+                                    </td>
+                                    <td class="text-muted">@carrera.AliasCarrera</td>
+                                    <td>
+                                        <span class="badge @(carrera.EstadoCarrera ? "bg-success" : "bg-secondary") rounded-pill">
+                                            <i class="fas @(carrera.EstadoCarrera ? "fa-check" : "fa-pause") me-1"></i>
+                                            @(carrera.EstadoCarrera ? "Activa" : "Inactiva")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-outline-info" @onclick="() => ToggleRow(carrera.IdCarrera)"
+                                                    title="@(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "Ocultar planes" : "Ver planes")">
+                                                <i class="fas @(filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera] ? "fa-chevron-up" : "fa-chevron-down") me-1"></i>
+                                                Planes
+                                            </button>
+                                            <button class="btn btn-outline-primary" @onclick="() => EditarCarrera(carrera.IdCarrera)" title="Editar carrera">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger" @onclick="() => EliminarCarrera(carrera.IdCarrera)" title="Eliminar carrera">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
 
+                                @if (filaExpandida.ContainsKey(carrera.IdCarrera) && filaExpandida[carrera.IdCarrera])
+                                {
+                                    <tr>
+                                        <td colspan="5" class="p-0 border-0">
+                                            <div class="bg-light border-top">
+                                                <div class="p-4">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h6 class="mb-0 text-dark">
+                                                            <i class="fas fa-clipboard-list text-primary me-2"></i>
+                                                            Planes de Estudio Asignados
+                                                        </h6>
+                                                        <button class="btn btn-primary btn-sm" @onclick="() => GestionarPlanes(carrera.IdCarrera)">
+                                                            <i class="fas fa-cog me-1"></i>Administrar Planes
+                                                        </button>
+                                                    </div>
+
+                                                    @if (carrera.PlanesDeEstudio != null && carrera.PlanesDeEstudio.Any())
+                                                    {
+                                                        <div class="table-responsive">
+                                                            <table class="table table-sm table-bordered bg-white">
+                                                                <thead class="table-dark">
+                                                                    <tr>
+                                                                        <th>Nombre del Plan</th>
+                                                                        <th class="text-center">Créditos Totales</th>
+                                                                        <th class="text-center">Estado</th>
+                                                                        <th class="text-center" style="width: 120px;">Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var plan in carrera.PlanesDeEstudio)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                <i class="fas fa-file-alt text-muted me-2"></i>
+                                                                                @plan.PlanEstudio
+                                                                            </td>
+                                                                            <td class="text-center fw-semibold">@plan.TotalCreditos</td>
+                                                                            <td class="text-center">
+                                                                                <span class="badge @(plan.EstadoPlanEstudio ? "bg-success" : "bg-secondary") rounded-pill">
+                                                                                    @(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")
+                                                                                </span>
+                                                                            </td>
+                                                                            <td class="text-center">
+                                                                                <button class="btn btn-outline-primary btn-sm"
+                                                                                        @onclick="() => EditarPlanDeEstudio(plan.IdPlanEstudio)"
+                                                                                        title="Editar plan">
+                                                                                    <i class="fas fa-edit"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="text-center py-4">
+                                                            <i class="fas fa-clipboard-question fa-2x text-muted mb-3"></i>
+                                                            <p class="text-muted mb-3">No hay planes de estudio asignados a esta carrera.</p>
+                                                            <button class="btn btn-outline-primary btn-sm" @onclick="() => GestionarPlanes(carrera.IdCarrera)">
+                                                                <i class="fas fa-plus me-1"></i>Asignar Planes
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
     private List<E_Carrera> carreras;
@@ -167,7 +241,7 @@ else
         if (confirmacion)
         {
             await CarreraServicios.EliminarCarreraAsync(idCarrera);
-            await ObtenerTodasLasCarreras(); 
+            await ObtenerTodasLasCarreras();
         }
     }
 
@@ -191,10 +265,8 @@ else
         }
     }
 
-
     private void ToggleRow(int idCarrera)
     {
-
         if (filaExpandida.TryGetValue(idCarrera, out bool isExpanded) && isExpanded)
         {
             filaExpandida[idCarrera] = false;
@@ -206,11 +278,7 @@ else
     }
 
     private void IrAHome()
-
     {
-
         NavManager.NavigateTo("/");
-
     }
-
 }

@@ -6,53 +6,187 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavManager
 
-<h3>Gestión de Planes de Estudio</h3>
+<div class="container-fluid px-4">
+    <!-- Header de la página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-primary mb-1">Gestión de Planes de Estudio</h3>
+            <p class="text-muted mb-0">Administra los planes de estudio del sistema</p>
+        </div>
+        <button class="btn btn-outline-secondary" @onclick="IrAHome">
+            <i class="fas fa-home me-2"></i>Ir a Inicio
+        </button>
+    </div>
 
-<p>
-    <button class="btn btn-success" @onclick="CrearPlanEstudio">Crear Nuevo Plan de Estudio</button>
+    <!-- Barra de herramientas -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        <small class="text-muted">
+                            Total de planes: <strong>@(planesDeEstudio?.Count ?? 0)</strong>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <button class="btn btn-success" @onclick="CrearPlanEstudio">
+                            <i class="fas fa-plus-circle me-2"></i>Nuevo Plan de Estudio
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <button class="btn btn-secondary" @onclick="IrAHome">
-        <i class="fas fa-home me-1" aria-hidden="true"></i> Ir a Inicio
-    </button>
-</p>
+    <!-- Tabla de planes de estudio -->
+    @if (planesDeEstudio == null)
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="text-muted mb-0">Cargando planes de estudio...</p>
+            </div>
+        </div>
+    }
+    else if (!planesDeEstudio.Any())
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No hay planes de estudio</h5>
+                <p class="text-muted mb-4">Comienza creando el primer plan de estudio.</p>
+                <button class="btn btn-primary" @onclick="CrearPlanEstudio">
+                    <i class="fas fa-plus-circle me-2"></i>Crear primer plan
+                </button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Plan de Estudio</th>
+                                <th class="text-center">Fecha de Creación</th>
+                                <th class="text-center">Créditos Totales</th>
+                                <th class="text-center">Estado</th>
+                                <th class="text-center" style="width: 180px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var plan in planesDeEstudio)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-file-alt text-primary me-3"></i>
+                                            <div>
+                                                <div class="fw-semibold">@plan.PlanEstudio</div>
+                                                @if (!string.IsNullOrEmpty(plan.Comentarios))
+                                                {
+                                                    <small class="text-muted">@plan.Comentarios</small>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            @plan.FechaCreacion.ToShortDateString()
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-primary rounded-pill fs-6">
+                                            @plan.TotalCreditos
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge @(plan.EstadoPlanEstudio ? "bg-success" : "bg-secondary") rounded-pill">
+                                            <i class="fas @(plan.EstadoPlanEstudio ? "fa-check" : "fa-pause") me-1"></i>
+                                            @(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-outline-primary"
+                                                    @onclick="() => EditarPlanEstudio(plan.IdPlanEstudio)"
+                                                    title="Editar plan de estudio">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger"
+                                                    @onclick="() => EliminarPlanEstudio(plan.IdPlanEstudio)"
+                                                    title="Eliminar plan de estudio">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-@if (planesDeEstudio == null)
-{
-    <p><em>Cargando...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Plan de Estudio</th>
+        <!-- Resumen estadístico -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@planesDeEstudio.Count</h4>
+                                <small>Total Planes</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-clipboard-list fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@planesDeEstudio.Count(p => p.EstadoPlanEstudio)</h4>
+                                <small>Planes Activos</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-secondary text-gray">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h4 class="mb-0">@planesDeEstudio.Count(p => !p.EstadoPlanEstudio)</h4>
+                                <small>Planes Inactivos</small>
+                            </div>
+                            <div class="align-self-center">
+                                <i class="fas fa-pause-circle fa-2x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <th>Fecha de Creación</th>
-
-                <th>Total de Créditos</th>
-
-                <th>Estado</th>
-
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var plan in planesDeEstudio)
-            {
-                <tr>
-                    <td>@plan.PlanEstudio</td>
-                    <td>@plan.FechaCreacion.ToShortDateString()</td>
-                    <td>@plan.TotalCreditos</td>
-                    <td>@(plan.EstadoPlanEstudio ? "Activo" : "Inactivo")</td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => EditarPlanEstudio(plan.IdPlanEstudio)">Editar</button>
-                        <button class="btn btn-danger" @onclick="() => EliminarPlanEstudio(plan.IdPlanEstudio)">X</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        </div>
+    }
+</div>
 
 @code {
     private List<E_PlanEstudio> planesDeEstudio;

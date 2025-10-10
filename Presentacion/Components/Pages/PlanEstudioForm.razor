@@ -6,68 +6,135 @@
 @inject ICarreraServicios CarreraServicios
 @inject NavigationManager NavigationManager
 
-<h3>@(planEstudio.IdPlanEstudio == 0 ? "Crear Nuevo Plan de Estudio" : $"Editar Plan de Estudio: {planEstudio.PlanEstudio}")</h3>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-clipboard-list me-2"></i>
+                        @(planEstudio.IdPlanEstudio == 0 ? "Crear Nuevo Plan de Estudio" : $"Editar Plan de Estudio: {planEstudio.PlanEstudio}")
+                    </h4>
+                </div>
 
-<EditForm Model="@planEstudio" OnValidSubmit="GuardarPlanEstudio">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+                <div class="card-body p-4">
+                    <EditForm Model="@planEstudio" OnValidSubmit="GuardarPlanEstudio">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="alert alert-danger mb-4" />
 
+                        <!-- Información Básica del Plan -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-info-circle me-2"></i>Información Básica
+                                </h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="plan" class="form-control" placeholder="Nombre del Plan" @bind-Value="planEstudio.PlanEstudio" />
+                                    <label for="plan" class="form-label">Nombre del Plan</label>
+                                </div>
+                            </div>
+                        </div>
 
-    <div class="form-group">
-        <label for="plan">Nombre del Plan</label>
-        <InputText id="plan" class="form-control" @bind-Value="planEstudio.PlanEstudio" />
+                        <!-- Créditos -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-calculator me-2"></i>Distribución de Créditos
+                                </h5>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="totalCreditos" class="form-control" placeholder="Total" @bind-Value="planEstudio.TotalCreditos" />
+                                    <label for="totalCreditos" class="form-label">Total de Créditos</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="creditosObligatorios" class="form-control" placeholder="Obligatorios" @bind-Value="planEstudio.CreditosObligatorios" />
+                                    <label for="creditosObligatorios" class="form-label">Créditos Obligatorios</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="creditosOptativos" class="form-control" placeholder="Optativos" @bind-Value="planEstudio.CreditosOptativos" />
+                                    <label for="creditosOptativos" class="form-label">Créditos Optativos</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perfiles Académicos -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-user-graduate me-2"></i>Perfiles Académicos
+                                </h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="perfilIngreso" class="form-control" placeholder="Perfil de Ingreso" style="height: 100px" @bind-Value="planEstudio.PerfilDeIngreso" />
+                                    <label for="perfilIngreso" class="form-label">Perfil de Ingreso</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="perfilEgreso" class="form-control" placeholder="Perfil de Egreso" style="height: 100px" @bind-Value="planEstudio.PerfilDeEgreso" />
+                                    <label for="perfilEgreso" class="form-label">Perfil de Egreso</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Adicional -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-briefcase me-2"></i>Información Adicional
+                                </h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="campoOcupacional" class="form-control" placeholder="Campo Ocupacional" style="height: 100px" @bind-Value="planEstudio.CampoOcupacional" />
+                                    <label for="campoOcupacional" class="form-label">Campo Ocupacional</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="comentarios" class="form-control" placeholder="Comentarios" style="height: 100px" @bind-Value="planEstudio.Comentarios" />
+                                    <label for="comentarios" class="form-label">Comentarios</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <InputCheckbox id="estado" class="form-check-input" @bind-Value="planEstudio.EstadoPlanEstudio" />
+                                <label class="form-check-label fw-medium" for="estado">Estado Activo</label>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary" @onclick="Cancelar">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Guardar
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="totalCreditos">Total de Créditos</label>
-        <InputNumber id="totalCreditos" class="form-control" @bind-Value="planEstudio.TotalCreditos" />
-    </div>
-
-    <div class="form-group">
-        <label for="creditosObligatorios">Créditos Obligatorios</label>
-        <InputNumber id="creditosObligatorios" class="form-control" @bind-Value="planEstudio.CreditosObligatorios" />
-    </div>
-
-    <div class="form-group">
-        <label for="creditosOptativos">Créditos Optativos</label>
-        <InputNumber id="creditosOptativos" class="form-control" @bind-Value="planEstudio.CreditosOptativos" />
-    </div>
-
-    <div class="form-group">
-        <label for="perfilIngreso">Perfil de Ingreso</label>
-        <InputTextArea id="perfilIngreso" class="form-control" @bind-Value="planEstudio.PerfilDeIngreso" />
-    </div>
-
-    <div class="form-group">
-        <label for="perfilEgreso">Perfil de Egreso</label>
-        <InputTextArea id="perfilEgreso" class="form-control" @bind-Value="planEstudio.PerfilDeEgreso" />
-    </div>
-
-    <div class="form-group">
-        <label for="campoOcupacional">Campo Ocupacional</label>
-        <InputTextArea id="campoOcupacional" class="form-control" @bind-Value="planEstudio.CampoOcupacional" />
-    </div>
-
-    <div class="form-group">
-        <label for="comentarios">Comentarios</label>
-        <InputTextArea id="comentarios" class="form-control" @bind-Value="planEstudio.Comentarios" />
-    </div>
-
-    <div class="form-group form-check">
-        <InputCheckbox id="estado" class="form-check-input" @bind-Value="planEstudio.EstadoPlanEstudio" />
-        <label class="form-check-label" for="estado">Estado Activo</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
-</EditForm>
+</div>
 
 @code {
     [Parameter]
     public int Id { get; set; }
 
     private E_PlanEstudio planEstudio = new E_PlanEstudio();
-
 
     protected override async Task OnParametersSetAsync()
     {
@@ -79,7 +146,6 @@
 
     private async Task GuardarPlanEstudio()
     {
-
         await PlanEstudioServicios.GuardarPlanAsync(planEstudio);
         NavigationManager.NavigateTo("/planes");
     }

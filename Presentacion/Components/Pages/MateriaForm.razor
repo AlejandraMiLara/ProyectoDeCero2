@@ -6,122 +6,204 @@
 @inject IMateriaServicios MateriaServicios
 @inject NavigationManager NavigationManager
 
-<h3>@(materia.IdMateria == 0 ? "Crear Nueva Materia" : "Editar Materia")</h3>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-book me-2"></i>
+                        @(materia.IdMateria == 0 ? "Crear Nueva Materia" : "Editar Materia")
+                    </h4>
+                </div>
 
-<EditForm Model="@materia" OnValidSubmit="GuardarCarrera">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+                <div class="card-body p-4">
+                    <EditForm Model="@materia" OnValidSubmit="GuardarCarrera">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="alert alert-danger mb-4" />
 
-    <div class="form-group">
-        <label for="clave">Clave de Materia</label>
-        <InputText id="clave" class="form-control" @bind-Value="materia.ClaveMateria" />
+                        <!-- Información Básica -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-info-circle me-2"></i>Información Básica
+                                </h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="clave" class="form-control" placeholder="Clave" @bind-Value="materia.ClaveMateria" />
+                                    <label for="clave" class="form-label">Clave de Materia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="materia" class="form-control" placeholder="Materia" @bind-Value="materia.PropositoMateria" />
+                                    <label for="materia" class="form-label">Materia</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Horas -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-clock me-2"></i>Distribución de Horas
+                                </h5>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="hc" class="form-control" placeholder="HC" @bind-Value="materia.HCMateria" />
+                                    <label for="hc" class="form-label">HC</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="hl" class="form-control" placeholder="HL" @bind-Value="materia.HLMateria" />
+                                    <label for="hl" class="form-label">HL</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="ht" class="form-control" placeholder="HT" @bind-Value="materia.HTMateria" />
+                                    <label for="ht" class="form-label">HT</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="hpc" class="form-control" placeholder="HPC" @bind-Value="materia.HPCMateria" />
+                                    <label for="hpc" class="form-label">HPC</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="hcl" class="form-control" placeholder="HCL" @bind-Value="materia.HCLMateria" />
+                                    <label for="hcl" class="form-label">HCL</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="he" class="form-control" placeholder="HE" @bind-Value="materia.HEMateria" />
+                                    <label for="he" class="form-label">HE</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6 mb-3">
+                                <div class="form-floating">
+                                    <InputNumber id="cr" class="form-control" placeholder="CR" @bind-Value="materia.CRMateria" />
+                                    <label for="cr" class="form-label">CR</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contenido Académico -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-graduation-cap me-2"></i>Contenido Académico
+                                </h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="competencia" class="form-control" placeholder="Competencia" @bind-Value="materia.CompetenciaMateria" />
+                                    <label for="competencia" class="form-label">Competencia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="evidencia" class="form-control" placeholder="Evidencia" @bind-Value="materia.EvidenciaMateria" />
+                                    <label for="evidencia" class="form-label">Evidencia</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="metodologia" class="form-control" placeholder="Metodología" @bind-Value="materia.MetodologiaMateria" />
+                                    <label for="metodologia" class="form-label">Metodología</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos de Texto Largos -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-file-alt me-2"></i>Información Detallada
+                                </h5>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="criterios" class="form-control" placeholder="Criterios" style="height: 100px" @bind-Value="materia.CriteriosMateria" />
+                                    <label for="criterios" class="form-label">Criterios</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="biba" class="form-control" placeholder="Bibliografía Básica" style="height: 100px" @bind-Value="materia.BibliografiaBasicaMateria" />
+                                    <label for="biba" class="form-label">Bibliografía Básica</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="bico" class="form-control" placeholder="Bibliografía Complementaria" style="height: 100px" @bind-Value="materia.BibliografiaCompletenciaMateria" />
+                                    <label for="bico" class="form-label">Bibliografía Complementaria</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <div class="form-floating">
+                                    <InputTextArea id="perdoc" class="form-control" placeholder="Perfil Docente" style="height: 100px" @bind-Value="materia.PerfilDocente" />
+                                    <label for="perdoc" class="form-label">Perfil Docente</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configuración Adicional -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3 border-bottom pb-2">
+                                    <i class="fas fa-cog me-2"></i>Configuración Adicional
+                                </h5>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputText id="pua" class="form-control" placeholder="Ruta PUA" @bind-Value="materia.PathPUAMateria" />
+                                    <label for="pua" class="form-label">Ruta PUA</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="form-floating">
+                                    <InputSelect id="nivel" class="form-control" @bind-Value="materia.IdNivelAcademico">
+                                        <option value="">-- Seleccione un nivel --</option>
+                                        @foreach (var nivel in nivelesAcademicos ?? new List<E_NivelAcademico>())
+                                        {
+                                            <option value="@nivel.IdNivelAcademico">@nivel.NombreNivelAcademico</option>
+                                        }
+                                    </InputSelect>
+                                    <label for="nivel" class="form-label">Nivel Académico</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                <InputCheckbox id="estado" class="form-check-input" @bind-Value="materia.EstadoMateria" />
+                                <label class="form-check-label fw-medium" for="estado">Estado Activo</label>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+                            <button type="button" class="btn btn-outline-secondary" @onclick="Cancelar">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Guardar
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="materia">Materia</label>
-        <InputText id="materia" class="form-control" @bind-Value="materia.PropositoMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hc">HC</label>
-        <InputNumber id="hc" class="form-control" @bind-Value="materia.HCMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hc">HL</label>
-        <InputNumber id="hl" class="form-control" @bind-Value="materia.HLMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="ht">HT</label>
-        <InputNumber id="ht" class="form-control" @bind-Value="materia.HTMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hpc">HPC</label>
-        <InputNumber id="hpc" class="form-control" @bind-Value="materia.HPCMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hc">HCL</label>
-        <InputNumber id="hcl" class="form-control" @bind-Value="materia.HCLMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hc">HE</label>
-        <InputNumber id="he" class="form-control" @bind-Value="materia.HEMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="hc">CR</label>
-        <InputNumber id="cr" class="form-control" @bind-Value="materia.CRMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="competencia">Competencia</label>
-        <InputText id="competencia" class="form-control" @bind-Value="materia.CompetenciaMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="evidencia">Evidencia Materia</label>
-        <InputText id="evidencia" class="form-control" @bind-Value="materia.EvidenciaMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="metodologia">Metodologia</label>
-        <InputText id="metodologia" class="form-control" @bind-Value="materia.MetodologiaMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="criterios">Criterios</label>
-        <InputTextArea id="criterios" class="form-control" @bind-Value="materia.CriteriosMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="biba">Bibliografía Básica</label>
-        <InputTextArea id="biba" class="form-control" @bind-Value="materia.BibliografiaBasicaMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="bico">Bibliografía Complementaria</label>
-        <InputTextArea id="bico" class="form-control" @bind-Value="materia.BibliografiaCompletenciaMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="pua">Ruta PUA</label>
-        <InputText id="pua" class="form-control" @bind-Value="materia.PathPUAMateria" />
-    </div>
-
-    <div class="form-group">
-        <label for="perdoc">Perfil Docente</label>
-        <InputTextArea id="perdoc" class="form-control" @bind-Value="materia.PerfilDocente" />
-    </div>
-
-    <div class="form-group">
-        <label for="nivel">Nivel Académico</label>
-        <InputSelect id="nivel" class="form-control" @bind-Value="materia.IdNivelAcademico">
-            <option value="">-- Seleccione un nivel --</option>
-            @foreach (var nivel in nivelesAcademicos ?? new List<E_NivelAcademico>())
-            {
-                <option value="@nivel.IdNivelAcademico">@nivel.NombreNivelAcademico</option>
-            }
-        </InputSelect>
-    </div>
-
-
-    <div class="form-group form-check">
-        <InputCheckbox id="estado" class="form-check-input" @bind-Value="materia.EstadoMateria" />
-        <label class="form-check-label" for="estado">Estado Activo</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-
-    <button type="button" class="btn btn-secondary mt-3" @onclick="Cancelar">Cancelar</button>
-
-
-</EditForm>
-
-
+</div>
 
 @code {
     [Parameter]
@@ -130,13 +212,11 @@
     private E_Materia materia = new E_Materia();
     private List<E_NivelAcademico> nivelesAcademicos;
 
-
     protected override async Task OnInitializedAsync()
     {
         nivelesAcademicos = await MateriaServicios.ObtenerTodosLosNivelesAcademicosAsync()
                               ?? new List<E_NivelAcademico>();
     }
-
 
     protected override async Task OnParametersSetAsync()
     {
