@@ -1,5 +1,5 @@
 ﻿@page "/docentes"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @using Servicios
 @inject IDocenteServicios DocenteServicios
@@ -219,7 +219,7 @@
 
 @code {
     private string busqueda = string.Empty;
-    private List<E_Docente> docentes;
+    private List<DocenteDto> docentes;
 
     protected override async Task OnInitializedAsync()
     {

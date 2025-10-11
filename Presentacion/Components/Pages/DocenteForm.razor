@@ -1,6 +1,6 @@
 ﻿@page "/docentes/form"
 @page "/docentes/form/{Id:int}"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @using Servicios;
 @inject IDocenteServicios DocenteServicios
@@ -89,7 +89,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    private E_Docente docente = new E_Docente();
+    private DocenteDto docente = new DocenteDto();
 
     protected override async Task OnParametersSetAsync()
     {

@@ -1,5 +1,7 @@
 ﻿using Entidades;
 using Negocios;
+using Servicios.DTOs;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +13,18 @@ namespace Servicios
     public class DocenteServicios : IDocenteServicios
     {
         private readonly DocenteNegocios _docenteNegocios;
+        private readonly IMapper _mapper;
 
-        public DocenteServicios(DocenteNegocios docenteNegocios)
+        public DocenteServicios(DocenteNegocios docenteNegocios, IMapper mapper)
         {
             _docenteNegocios = docenteNegocios;
+            _mapper = mapper;
         }
 
-        public async Task<List<E_Docente>> BuscarDocenteAsync(string busqueda)
+        public async Task<List<DocenteDto>> BuscarDocenteAsync(string busqueda)
         {
-            return await _docenteNegocios.BuscarDocenteAsync(busqueda);
+            var docenteEntidades = await _docenteNegocios.BuscarDocenteAsync(busqueda);
+            return _mapper.Map<List<DocenteDto>>(busqueda);
         }
 
         public async Task EliminarDocenteAsync(int id)
@@ -27,19 +32,22 @@ namespace Servicios
             await _docenteNegocios.EliminarDocenteAsync(id);
         }
 
-        public async Task GuardarDocenteAsync(E_Docente docente)
+        public async Task GuardarDocenteAsync(DocenteDto docente)
         {
-            await _docenteNegocios.GuardarDocenteAsync(docente);
+            var docenteEntidad = _mapper.Map<E_Docente>(docente);
+            await _docenteNegocios.GuardarDocenteAsync(docenteEntidad);
         }
 
-        public async Task<E_Docente> ObtenerDocentePorIdAsync(int id)
+        public async Task<DocenteDto> ObtenerDocentePorIdAsync(int id)
         {
-            return await _docenteNegocios.ObtenerDocentePorIdAsync(id);
+            var docenteEntidad = await _docenteNegocios.ObtenerDocentePorIdAsync(id);
+            return _mapper.Map<DocenteDto>(docenteEntidad);
         }
 
-        public async Task<List<E_Docente>> ObtenerTodosLosDocentesAsync()
+        public async Task<List<DocenteDto>> ObtenerTodosLosDocentesAsync()
         {
-            return await _docenteNegocios.ObtenerTodosLosDocentesAsync();
+            var docentesEntidades = await _docenteNegocios.ObtenerTodosLosDocentesAsync();
+            return _mapper.Map<List<DocenteDto>>(docentesEntidades);
         }
     }
 }

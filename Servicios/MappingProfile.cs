@@ -26,6 +26,9 @@ namespace Servicios
             CreateMap<E_Carrera, CarreraListadoDto>();
             CreateMap<CarreraFormDto, E_Carrera>();
 
+            CreateMap<E_Docente, DocenteDto>();
+            CreateMap<DocenteDto, E_Docente>();
+
 
         }
 
