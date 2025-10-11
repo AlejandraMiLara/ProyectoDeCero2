@@ -8,12 +8,19 @@ using ProyectoDeCero2.Servicios;
 using Servicios;
 using Negocios;
 using Datos;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Inyección de AUTOMAPPER
+builder.Services.AddAutoMapper(cfg =>
+{
+    // espacio para configuraciones avanzadas que no necesito
+}, typeof(MappingProfile).Assembly);
 
 //Inyección de NivelAcademico
 builder.Services.AddScoped<RepositorioNivelAcademico>();
@@ -49,7 +56,7 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("La cadena de conexión 'ConnectionToDb' no se encontró.");
 }
 
-builder.Services.AddDbContext<Contexto>(options =>
+builder.Services.AddDbContextFactory<Contexto>(options =>
     options.UseSqlServer(connectionString)
 );
 

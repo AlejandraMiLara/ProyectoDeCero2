@@ -1,6 +1,6 @@
 ﻿@page "/planes/form"
 @page "/planes/form/{Id:int}"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @inject IPlanEstudioServicios PlanEstudioServicios
 @inject ICarreraServicios CarreraServicios
@@ -134,13 +134,13 @@
     [Parameter]
     public int Id { get; set; }
 
-    private E_PlanEstudio planEstudio = new E_PlanEstudio();
+    private PlanEstudioFormDto planEstudio = new PlanEstudioFormDto();
 
     protected override async Task OnParametersSetAsync()
     {
         if (Id != 0)
         {
-            planEstudio = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id) ?? new E_PlanEstudio();
+            planEstudio = await PlanEstudioServicios.ObtenerPlanPorIdAsync(Id) ?? new PlanEstudioFormDto();
         }
     }
 

@@ -11,61 +11,76 @@ namespace ProyectoDeCero2.Datos
 {
     public class RepositorioCarrera
     {
-        private readonly Contexto _contexto;
+        private readonly IDbContextFactory<Contexto> _contextFactory;
 
-        public RepositorioCarrera(Contexto contexto)
+        public RepositorioCarrera(IDbContextFactory<Contexto> contextFactory)
         {
-            _contexto = contexto;
+            _contextFactory = contextFactory;
         }
 
         public async Task<List<E_Carrera>> ObtenerTodasAsync()
         {
-            return await _contexto.Carreras
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.Carreras
                 .Include(c => c.PlanesDeEstudio)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<E_Carrera> ObtenerPorIdAsync(int id)
         {
-            return await _contexto.Carreras
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.Carreras
                 .Include(c => c.PlanesDeEstudio)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.IdCarrera == id);
         }
 
         public async Task AgregarAsync(E_Carrera carrera)
         {
-            _contexto.Carreras.Add(carrera);
-            await _contexto.SaveChangesAsync();
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+            contexto.Carreras.Add(carrera);
+            await contexto.SaveChangesAsync();
         }
 
         public async Task ActualizarAsync(E_Carrera carrera)
         {
-            _contexto.Entry(carrera).State = EntityState.Modified;
-            await _contexto.SaveChangesAsync();
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+            contexto.Carreras.Update(carrera);
+            await contexto.SaveChangesAsync();
         }
 
         public async Task EliminarAsync(int id)
         {
-            var carrera = await _contexto.Carreras.FindAsync(id);
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            var carrera = await contexto.Carreras.FindAsync(id);
             if (carrera != null)
             {
-                _contexto.Carreras.Remove(carrera);
-                await _contexto.SaveChangesAsync();
+                contexto.Carreras.Remove(carrera);
+                await contexto.SaveChangesAsync();
             }
         }
 
         public async Task<List<E_Carrera>> BuscarAsync(string busqueda)
         {
-            return await _contexto.Carreras
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.Carreras
                 .Where(c => c.NombreCarrera.Contains(busqueda) || c.ClaveCarrera.Contains(busqueda))
                 .Include(c => c.PlanesDeEstudio)
+                .AsNoTracking()
                 .ToListAsync();
         }
 
 
         public async Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsNuevosPlanes)
         {
-            var carrera = await _contexto.Carreras
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            var carrera = await contexto.Carreras
                 .Include(c => c.PlanesDeEstudio)
                 .FirstOrDefaultAsync(c => c.IdCarrera == idCarrera);
 
@@ -74,13 +89,13 @@ namespace ProyectoDeCero2.Datos
                 return;
             }
 
-            var nuevosPlanes = await _contexto.PlanesDeEstudio
+            var nuevosPlanes = await contexto.PlanesDeEstudio
                 .Where(p => idsNuevosPlanes.Contains(p.IdPlanEstudio))
                 .ToListAsync();
 
             carrera.PlanesDeEstudio = nuevosPlanes;
 
-            await _contexto.SaveChangesAsync();
+            await contexto.SaveChangesAsync();
         }
     }
 }

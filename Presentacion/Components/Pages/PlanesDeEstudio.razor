@@ -1,5 +1,5 @@
 ﻿@page "/planes"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @inject IPlanEstudioServicios PlanEstudioServicios
 @inject NavigationManager NavigationManager
@@ -189,7 +189,7 @@
 </div>
 
 @code {
-    private List<E_PlanEstudio> planesDeEstudio;
+    private List<PlanEstudioFormDto> planesDeEstudio;
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,4 +1,4 @@
-﻿using Entidades;
+﻿using Servicios.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ namespace ProyectoDeCero2.Servicios
 {
     public interface IPlanEstudioServicios
     {
-        Task<List<E_PlanEstudio>> ObtenerTodosLosPlanesAsync();
-        Task<E_PlanEstudio> ObtenerPlanPorIdAsync(int id);
-        Task GuardarPlanAsync(E_PlanEstudio planEstudio);
+        Task<List<PlanEstudioFormDto>> ObtenerTodosLosPlanesAsync();
+        Task<PlanEstudioFormDto> ObtenerPlanPorIdAsync(int id);
+        Task GuardarPlanAsync(PlanEstudioFormDto planEstudio);
         Task EliminarPlanAsync(int id);
-        Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraAsync(int idCarrera);
+        Task<List<PlanEstudioFormDto>> ObtenerPlanesPorCarreraAsync(int idCarrera);
     }
 }

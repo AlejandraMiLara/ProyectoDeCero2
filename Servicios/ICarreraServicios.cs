@@ -1,4 +1,4 @@
-﻿using Entidades;
+﻿using Servicios.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,12 @@ namespace ProyectoDeCero2.Servicios
 {
     public interface ICarreraServicios
     {
-        Task<List<E_Carrera>> ObtenerTodasLasCarrerasAsync();
-        Task<List<E_Carrera>> BuscarCarrerasAsync(string busqueda);
+        Task<List<CarreraListadoDto>> ObtenerTodasLasCarrerasAsync();
+        Task<List<CarreraListadoDto>> BuscarCarrerasAsync(string busqueda);
         Task EliminarCarreraAsync(int id);
-        Task GuardarCarreraAsync(E_Carrera carrera);
-        Task<E_Carrera> ObtenerCarreraPorIdAsync(int id);
+        Task GuardarCarreraAsync(CarreraFormDto carrera);
+        Task<CarreraFormDto> ObtenerCarreraPorIdAsync(int id);
         Task ActualizarPlanesDeCarreraAsync(int idCarrera, List<int> idsPlanes);
+        Task<CarreraGestionPlanesDto> ObtenerCarreraParaGestionarPlanesAsync(int idCarrera);
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page "/carreras"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @inject ICarreraServicios CarreraServicios
 @inject IPlanEstudioServicios PlanEstudioServicios
@@ -204,7 +204,7 @@
 </div>
 
 @code {
-    private List<E_Carrera> carreras;
+    private List<CarreraListadoDto> carreras;
     private string busqueda = string.Empty;
     private Dictionary<int, bool> filaExpandida = new Dictionary<int, bool>();
 

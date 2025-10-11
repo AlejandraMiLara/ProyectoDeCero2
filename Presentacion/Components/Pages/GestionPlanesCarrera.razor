@@ -1,5 +1,5 @@
 ﻿@page "/carreras/{IdCarrera:int}/gestionar-planes"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @inject ICarreraServicios CarreraServicios
 @inject IPlanEstudioServicios PlanEstudioServicios
@@ -214,8 +214,8 @@
     [Parameter]
     public int IdCarrera { get; set; }
 
-    private E_Carrera carrera;
-    private List<E_PlanEstudio> todosLosPlanes;
+    private CarreraGestionPlanesDto carrera;
+    private List<PlanEstudioFormDto> todosLosPlanes;
     private HashSet<int> idsPlanesSeleccionados = new HashSet<int>();
 
     protected override async Task OnInitializedAsync()
@@ -225,12 +225,12 @@
 
     private async Task CargarDatos()
     {
-        carrera = await CarreraServicios.ObtenerCarreraPorIdAsync(IdCarrera);
+        carrera = await CarreraServicios.ObtenerCarreraParaGestionarPlanesAsync(IdCarrera);
         todosLosPlanes = await PlanEstudioServicios.ObtenerTodosLosPlanesAsync();
 
-        if (carrera != null && carrera.PlanesDeEstudio != null)
+        if (carrera != null)
         {
-            idsPlanesSeleccionados = new HashSet<int>(carrera.PlanesDeEstudio.Select(p => p.IdPlanEstudio));
+            idsPlanesSeleccionados = new HashSet<int>(carrera.IdsPlanesEstudio);
         }
     }
 

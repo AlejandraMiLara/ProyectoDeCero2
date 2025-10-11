@@ -1,6 +1,6 @@
 ﻿@page "/carreras/form"
 @page "/carreras/form/{Id:int}"
-@using Entidades
+@using Servicios.DTOs
 @using ProyectoDeCero2.Servicios
 @using Servicios;
 @inject ICarreraServicios CarreraServicios
@@ -80,7 +80,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    private E_Carrera carrera = new E_Carrera();
+    private CarreraFormDto carrera = new CarreraFormDto();
 
     protected override async Task OnParametersSetAsync()
     {

@@ -10,51 +10,67 @@ namespace ProyectoDeCero2.Datos
 {
     public class RepositorioPlanEstudio
     {
-        private readonly Contexto _contexto;
+        private readonly IDbContextFactory<Contexto> _contextFactory;
 
-        public RepositorioPlanEstudio(Contexto contexto)
+        public RepositorioPlanEstudio(IDbContextFactory<Contexto> contextFactory)
         {
-            _contexto = contexto;
+            _contextFactory = contextFactory;
         }
 
         public async Task<List<E_PlanEstudio>> ObtenerTodosAsync()
         {
-            return await _contexto.PlanesDeEstudio.Include(p => p.Carreras).ToListAsync();
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.PlanesDeEstudio.Include(p => p.Carreras)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<List<E_PlanEstudio>> ObtenerPlanesPorCarreraIdAsync(int idCarrera)
         {
-            return await _contexto.PlanesDeEstudio
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.PlanesDeEstudio
                 .Where(p => p.Carreras.Any(c => c.IdCarrera == idCarrera))
+                .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<E_PlanEstudio> ObtenerPorIdAsync(int id)
         {
-            return await _contexto.PlanesDeEstudio
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            return await contexto.PlanesDeEstudio
                 .Include(p => p.Carreras)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.IdPlanEstudio == id);
         }
 
         public async Task AgregarAsync(E_PlanEstudio planEstudio)
         {
-            _contexto.PlanesDeEstudio.Add(planEstudio);
-            await _contexto.SaveChangesAsync();
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            contexto.PlanesDeEstudio.Add(planEstudio);
+            await contexto.SaveChangesAsync();
         }
 
         public async Task ActualizarAsync(E_PlanEstudio planEstudio)
         {
-            _contexto.Entry(planEstudio).State = EntityState.Modified;
-            await _contexto.SaveChangesAsync();
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            contexto.PlanesDeEstudio.Update(planEstudio);
+            await contexto.SaveChangesAsync();
         }
 
         public async Task EliminarAsync(int id)
         {
-            var planEstudio = await _contexto.PlanesDeEstudio.FindAsync(id);
+            await using var contexto = await _contextFactory.CreateDbContextAsync();
+
+            var planEstudio = await contexto.PlanesDeEstudio.FindAsync(id);
             if (planEstudio != null)
             {
-                _contexto.PlanesDeEstudio.Remove(planEstudio);
-                await _contexto.SaveChangesAsync();
+                contexto.PlanesDeEstudio.Remove(planEstudio);
+                await contexto.SaveChangesAsync();
             }
         }
     }
